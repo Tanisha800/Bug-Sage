@@ -1,7 +1,11 @@
 "use client"
+import { Footer } from "@/components/blocks/footer-section";
+import { Features } from "@/components/Features";
+import HeroSection from "@/components/Hero Section";
 import { FloatingNavbar } from "@/components/navbar";
-import Orb from "@/components/Orb";
+
 import { PricingBasic } from "@/components/Plan";
+import { AnimatedTestimonialsDemo } from "@/components/Testimonial";
 import { useTheme } from "next-themes";
 
 export default function Home() {
@@ -14,10 +18,13 @@ export default function Home() {
   return (
     <div>
       <FloatingNavbar/>
-      <Orb></Orb>
+      <HeroSection/>
+      <Features/>
       <PricingBasic/>
+      <AnimatedTestimonialsDemo/>
+      <Footer/>
 
-      <div className="w-20 h-20 bg-amber-300 dark:bg-amber-700"></div>
+      {/* <div className="w-20 h-20 bg-amber-300 dark:bg-amber-700"></div>
       <div
       className="min-h-screen flex flex-col items-center justify-center 
                  bg-card 
@@ -32,7 +39,7 @@ export default function Home() {
       >
         Toggle Theme
       </button>
-    </div>
+    </div> */}
     </div>
   );
 }

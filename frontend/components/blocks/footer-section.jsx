@@ -1,7 +1,8 @@
-'use client';;
+'use client';
 import React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'framer-motion';  
 import { FacebookIcon, FrameIcon, InstagramIcon, LinkedinIcon, YoutubeIcon } from 'lucide-react';
+
 
 const footerLinks = [
 	{
