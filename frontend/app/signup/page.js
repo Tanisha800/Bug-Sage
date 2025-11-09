@@ -1,12 +1,11 @@
 "use client"
-import SignUp from '@/components/signup'
-import { SignInPage } from '@/components/ui/sign-in'
+import { SignUpPage } from '@/components/ui/signup'
 import React from 'react'
 
-function page() {
+function page2() {
   return (
-    <div><SignUp/></div>
+    <div><SignUpPage/></div>
   )
 }
 
-export default page
+export default page2

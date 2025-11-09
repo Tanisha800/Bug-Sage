@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import Link from "next/link";
 
 // --- HELPER COMPONENTS (ICONS) ---
 
@@ -56,7 +57,7 @@ const TestimonialCard = ({
 // --- MAIN COMPONENT ---
 
 export const SignInPage = ({
-  title = <span className="font-light text-foreground tracking-tighter">Welcome</span>,
+  title = <span className="flex justify-center items-center font-light text-foreground tracking-tighter text-center">Welcome Back !</span>,
   description = "Access your account and continue your journey with us",
   heroImageSrc,
   testimonials = [],
@@ -144,10 +145,9 @@ export const SignInPage = ({
 
             <p
               className="animate-element animate-delay-900 text-center text-sm text-muted-foreground">
-              New to our platform? <a
-              href="#"
-              onClick={(e) => { e.preventDefault(); onCreateAccount?.(); }}
-              className="text-violet-400 hover:underline transition-colors">Create Account</a>
+              New to our platform? <Link
+          href="/signup"
+              className="text-violet-400 hover:underline transition-colors">Create Account</Link>
             </p>
           </div>
         </div>
