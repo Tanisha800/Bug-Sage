@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const u = getUser();
-    if (u) setUser(u)
+    if (u) setUser(u);
   }, []);
 
   const handleLogout = () => {

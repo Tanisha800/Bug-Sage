@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from "next/link";
+import axios from "axios";
 
 // --- HELPER COMPONENTS (same as in SignInPage) ---
 
@@ -43,6 +44,62 @@ export const SignUpPage = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+  
+    const formData = new FormData(e.target);
+    const username = formData.get("fullName");
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword");
+    console.log(process.env.NEXT_PUBLIC_API_URL)
+  
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!");
+      setLoading(false);
+      return;
+    }
+  
+    try {
+      // ✅ use fetch instead of axios
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
+      });
+  
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Signup failed!");
+      }
+  
+      const data = await res.json();
+      console.log("✅ Signup response:", data);
+  
+      // store token locally
+      localStorage.setItem("token", data.token);
+      setSuccess("Account created successfully!");
+  
+      // redirect after success
+      setTimeout(() => {
+        window.location.href = "/signin";
+      }, 1000);
+  
+    } catch (err) {
+      console.error("Signup error:", err);
+      setError(err.message || "Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   return (
     <div className="h-[100dvh] flex flex-col md:flex-row font-geist w-[100dvw]">
@@ -57,7 +114,7 @@ export const SignUpPage = ({
               {description}
             </p>
 
-            <form className="space-y-5" onSubmit={onSignUp}>
+            <form className="space-y-5" onSubmit={handleSignUp}>
               {/* Full Name */}
               <div className="animate-element animate-delay-300">
                 <label className="text-sm font-medium text-muted-foreground">Full Name</label>
@@ -133,7 +190,10 @@ export const SignUpPage = ({
                       )}
                     </button>
                   </div>
+                  
                 </GlassInputWrapper>
+                {error && <p className="text-red-500 text-center">{error}</p>}
+        {success && <p className="text-green-500 text-center">{success}</p>}
               </div>
 
               <button
