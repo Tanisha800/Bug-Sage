@@ -40,11 +40,11 @@ app.post("/signup", async (req, res) => {
 
     // Check if user already exists
     const existingUser = await prisma.user.findFirst({
-      where: { OR: [{ username }, { email }] },
-    });
+      where: { email } },
+    );
 
     if (existingUser) {
-      return res.status(400).json({ error: "Username or email already exists." });
+      return res.status(400).json({ error: "email already exists." });
     }
 
     // Hash password
