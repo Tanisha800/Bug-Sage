@@ -59,7 +59,7 @@ export const SignUpPage = ({
     const email = formData.get("email");
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
-    console.log(process.env.NEXT_PUBLIC_API_URL)
+   
   
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
@@ -90,7 +90,7 @@ export const SignUpPage = ({
       // redirect after success
       setTimeout(() => {
         window.location.href = "/signin";
-      }, 1000);
+      }, 10000);                  
   
     } catch (err) {
       console.error("Signup error:", err);
