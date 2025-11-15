@@ -2,9 +2,7 @@ import { SignInPage, Testimonial } from "@/components/ui/sign-in";
 const Signin = () => {
   const handleSignIn = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    console.log("Sign In submitted:", data);
+
     alert(`Sign In Submitted! Check the browser console for form data.`);
   };
 
