@@ -90,7 +90,7 @@ export const SignUpPage = ({
       // redirect after success
       setTimeout(() => {
         window.location.href = "/signin";
-      }, 2000);                  
+      }, 3000);                  
   
     } catch (err) {
       console.error("Signup error:", err);
