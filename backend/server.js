@@ -111,8 +111,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
-// 🧱 Middleware: Verify JWT
 function verifyToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1]; // Bearer <token>
@@ -123,7 +121,7 @@ function verifyToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded; // attach user data to request
+    req.user = decoded; 
     next();
   } catch (err) {
     return res.status(401).json({ error: "Invalid or expired token." });
@@ -131,11 +129,11 @@ function verifyToken(req, res, next) {
 }
 
 
-// 👥 PROTECTED ROUTE (Get all users)
+
 app.get("/users", verifyToken, async (req, res) => {
   try {
     const users = await prisma.user.findMany({
-      select: { id: true, username: true, email: true }, // don’t return passwords
+      select: { id: true, username: true, email: true }, 
     });
     res.json(users);
   } catch (err) {
@@ -145,6 +143,5 @@ app.get("/users", verifyToken, async (req, res) => {
 });
 
 
-// 🚀 Start server
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
