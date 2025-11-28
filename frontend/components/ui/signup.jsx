@@ -59,6 +59,7 @@ export const SignUpPage = ({
     const email = formData.get("email");
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
+    console.log("Clicked")
    
   
     if (password !== confirmPassword) {
@@ -85,6 +86,7 @@ export const SignUpPage = ({
   
       // store token locally
       localStorage.setItem("token", data.token);
+      // document.cookie = `token=${token}; path=/;`;
       setSuccess("Account created successfully!");
   
       // redirect after success

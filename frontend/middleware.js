@@ -5,7 +5,7 @@ export function middleware(req) {
   const url = req.nextUrl.clone();
 
   if (!token && url.pathname.startsWith("/dashboard")) {
-    url.pathname = "/login";
+    url.pathname = "/signup";
     return NextResponse.redirect(url);
   }
 
