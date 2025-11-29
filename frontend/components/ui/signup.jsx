@@ -86,7 +86,7 @@ export const SignUpPage = ({
   
       // store token locally
       localStorage.setItem("token", data.token);
-      // document.cookie = `token=${token}; path=/;`;
+      document.cookie = `token=${data.token}; path=/;`;
       setSuccess("Account created successfully!");
   
       // redirect after success
