@@ -1,9 +1,9 @@
-const express = require('express');
-const prisma = require('../prismaClient');
-const { BugStatus } = require('@prisma/client');
+import express from "express";
+import prisma from "../prismaClient.js";
+import pkg from "@prisma/client";
+const { BugStatus, PrismaClient } = pkg;
 
 const router = express.Router();
-
 /**
  * POST /bugs
  * Naya bug add karega (default status: BACKLOG)
@@ -122,4 +122,4 @@ router.get('/stats/summary', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

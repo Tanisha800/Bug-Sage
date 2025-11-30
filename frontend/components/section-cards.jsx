@@ -25,7 +25,7 @@ export function SectionCards() {
   useEffect(()=>{
     async function fetchStats(){
       try{
-        const res=await axios.get("/stats/summary")
+        const res=await axios.get("tasks/stats/summary")
         setStats(res.data);
       }
       catch(error){
