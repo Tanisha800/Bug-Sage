@@ -1,12 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  
 }
 
 datasource db {
@@ -14,26 +10,73 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// 🧱 Enums
+enum UserRole {
+  ADMIN
+  TESTER
+  DEVELOPER
+}
+
 enum BugStatus {
+  BACKLOG
   PENDING
   IN_PROGRESS
   RESOLVED
 }
 
+// 👥 User model
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  username  String   
+  username  String
   email     String   @unique
   password  String
+
+  role   UserRole @default(TESTER)
+  teamId String?  @db.ObjectId
+  team   Team?    @relation(fields: [teamId], references: [id])
+
+  // Relations
+  reportedBugs Bug[] @relation("ReportedBugs")
+  assignedBugs Bug[] @relation("AssignedBugs")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+// 🧑‍🤝‍🧑 Team model
+model Team {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+
+  users User[]
+  bugs  Bug[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 🐞 Bug model
 model Bug {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
-  status      BugStatus @default(PENDING)
+  status      BugStatus @default(BACKLOG)
+
+  // Reporter (TESTER)
+  reporterId String @db.ObjectId
+  reporter   User   @relation("ReportedBugs", fields: [reporterId], references: [id])
+
+  // Assignee (DEVELOPER)
+  assigneeId String @db.ObjectId
+  assignee   User   @relation("AssignedBugs", fields: [assigneeId], references: [id])
+
+  // Team
+  teamId String? @db.ObjectId
+  team   Team?   @relation(fields: [teamId], references: [id])
+
+  dueDate       DateTime?
+  attachmentUrl String?
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
-
-

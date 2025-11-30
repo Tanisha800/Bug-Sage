@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import cors from "cors";
 import taskRouter from "./routes/tasks.js";
-
+import bugRouter from "./routes/bug.js"
 // Load environment variables
 dotenv.config();
 
@@ -19,6 +19,7 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use("/tasks", taskRouter);
+app.use("/bugs", bugRouter);
 
 // Initialize Prisma Client
 const prisma = new PrismaClient();

@@ -1,179 +1,197 @@
-"use client"
 
-import * as React from "react"
-import {
-  ArrowUpCircleIcon,
-  BarChartIcon,
-  CameraIcon,
-  ClipboardListIcon,
-  DatabaseIcon,
-  FileCodeIcon,
-  FileIcon,
-  FileTextIcon,
-  FolderIcon,
-  HelpCircleIcon,
-  LayoutDashboardIcon,
-  ListIcon,
-  SearchIcon,
-  SettingsIcon,
-  UsersIcon,
-} from "lucide-react"
+"use client";
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import * as React from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
   SidebarHeader,
+  SidebarFooter,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+  SidebarMenuButton,
+  SidebarSeparator,
+  useSidebar,
+} from "@/components/ui/sidebar";
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      icon: LayoutDashboardIcon,
-    },
-    {
-      title: "Lifecycle",
-      url: "#",
-      icon: ListIcon,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: BarChartIcon,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: FolderIcon,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: UsersIcon,
-    },
-  ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: CameraIcon,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: FileTextIcon,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: FileCodeIcon,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: SettingsIcon,
-    },
-    {
-      title: "Get Help",
-      url: "#",
-      icon: HelpCircleIcon,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: SearchIcon,
-    },
-  ],
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: DatabaseIcon,
-    },
-    {
-      name: "Reports",
-      url: "#",
-      icon: ClipboardListIcon,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: FileIcon,
-    },
-  ],
+import {
+  LayoutDashboard,
+  FolderKanban,
+  Users,
+  Settings,
+  HelpCircle,
+  Sun,
+  Moon,
+  ChevronsUpDown,
+  LogOut,
+  Bug,
+  SettingsIcon,
+  HelpCircleIcon,
+  SearchIcon,
+} from "lucide-react";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTheme } from "next-themes";
+import { NavSecondary } from "./nav-secondary";
+import { NavUser } from "./nav-user";
+import { IconCirclePlusFilled } from "@tabler/icons-react";
+import RaiseTicket from "./dashboard/RaiseTicket";
+
+function getInitials(name) {
+  if (!name) return "?";
+  const parts = name.split(" ");
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
 }
 
-export function AppSidebar({
-  ...props
-}) {
+export function AppSidebar() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { open } = useSidebar();
+  const { theme, setTheme } = useTheme();
+
+  // Dummy user (replace with your context later)
+  const user = {
+    name: "Tanisha",
+    email: "tanisha@example.com",
+    avatar: null,
+  };
+  // const data ={navSecondary: [
+  //   {
+  //     title: "Settings",
+  //     url: "#",
+  //     icon: SettingsIcon,
+  //   },
+  //   {
+  //     title: "Get Help",
+  //     url: "#",
+  //     icon: HelpCircleIcon,
+  //   },
+  //   {
+  //     title: "Search",
+  //     url: "#",
+  //     icon: SearchIcon,
+  //   },
+  // ],}
+
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar variant="floating" collapsible="icon">
+      {/* -------------------------------------- */}
+      {/* BRANDING */}
+      {/* -------------------------------------- */}
       <SidebarHeader>
-        <SidebarMenu>
+        <div className="flex items-center gap-2">
+          <div className="bg-primary p-1 rounded-md h-8 w-8 flex items-center justify-center">
+            <Bug className="text-white" />
+          </div>
+          <span className="font-semibold text-lg truncate">BugSage</span>
+        </div>
+        <SidebarMenu className="mt-3 w-full">
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <a href="#">
-                <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
-            </SidebarMenuButton>
+            <RaiseTicket>
+              <SidebarMenuButton asChild>
+                <button className="flex items-center gap-2 cursor-pointer bg-primary font-semibold text-white px-3 py-2 rounded-md transition w-full ">
+                  <IconCirclePlusFilled className="w-4 h-4" />
+                  <span>Raise a Ticket</span>
+                </button>
+              </SidebarMenuButton>
+              </RaiseTicket>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+
+      {/* -------------------------------------- */}
+      {/* MAIN NAVIGATION */}
+      {/* -------------------------------------- */}
+      <SidebarContent className="overflow-y-auto overflow-x-hidden">
+        <SidebarGroup>
+          <SidebarGroupLabel>Main</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {/* Dashboard */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/dashboard"}
+                >
+                  <Link href="/dashboard">
+                    <LayoutDashboard />
+                    <span>Dashboard</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* Projects */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/dashboard/bugs"}
+                >
+                  <Link href="/dashboard/bugs">
+                    <FolderKanban />
+                    <span>Projects</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* Team */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/dashboard/team"}
+                >
+                  <Link href="/dashboard/team">
+                    <Users />
+                    <span>Team</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarSeparator className="mx-2" />
+
+        {/* -------------------------------------- */}
+        {/* SECONDARY NAVIGATION */}
+        {/* -------------------------------------- */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Tools</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {/* Theme Toggle */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <button
+                    onClick={() =>
+                      setTheme(theme === "dark" ? "light" : "dark")
+                    }
+                    className="flex items-center gap-2 cursor-pointer w-full"
+                  >
+                    {theme === "dark" ? <Sun /> : <Moon />}
+                    <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+                  </button>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
+
+      {/* -------------------------------------- */}
+      {/* FOOTER - USER PROFILE */}
+      {/* -------------------------------------- */}
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

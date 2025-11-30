@@ -26,13 +26,18 @@ export function SectionCards() {
     async function fetchStats(){
       try{
         const res=await axios.get("tasks/stats/summary")
-        setStats(res.data);
+        setStats({
+          pendingBugs: res.data.backlog,
+          inProgress: res.data.inProgress,
+          tested: res.data.testing,
+          resolvedBugs: res.data.resolved
+        });
       }
       catch(error){
         console.error("Error fetching dashboard stats:", error);
       }
       finally{
-        loading(false)
+        setLoading(false);
         console.log(stats)
       }
     }fetchStats();
@@ -46,7 +51,7 @@ export function SectionCards() {
         <CardHeader className="relative">
           <CardDescription>Backlog</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            $1,250.00
+            {stats.pendingBugs}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
@@ -62,7 +67,7 @@ export function SectionCards() {
         <CardHeader className="relative">
           <CardDescription>In Progress</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            1,234
+            {stats.inProgress}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
@@ -78,7 +83,7 @@ export function SectionCards() {
         <CardHeader className="relative">
           <CardDescription>Testing</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            45,678
+            {stats.tested}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
@@ -92,7 +97,7 @@ export function SectionCards() {
         <CardHeader className="relative">
           <CardDescription>Resolved</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            4.5%
+            {stats.resolvedBugs}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
