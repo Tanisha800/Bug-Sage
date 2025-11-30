@@ -1,6 +1,10 @@
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react"
+"use client"
 
+import { TrendingDownIcon, TrendingUpIcon } from "lucide-react"
+import axios from "@/lib/axios";
 import { Badge } from "@/components/ui/badge"
+
+
 import {
   Card,
   CardDescription,
@@ -8,8 +12,33 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { useState,useEffect } from "react";
 
 export function SectionCards() {
+  const[stats,setStats]=useState({
+    pendingBugs: 0,
+    inProgress: 0,
+    tested: 0,
+    resolvedBugs: 0,
+  })
+  const[loading,setLoading]=useState(true)
+  useEffect(()=>{
+    async function fetchStats(){
+      try{
+        const res=await axios.get("/stats/summary")
+        setStats(res.data);
+      }
+      catch(error){
+        console.error("Error fetching dashboard stats:", error);
+      }
+      finally{
+        loading(false)
+        console.log(stats)
+      }
+    }fetchStats();
+  },[])
+    
+
   return (
     <div
       className="*:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4 grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:px-6">
@@ -75,4 +104,5 @@ export function SectionCards() {
       </Card>
     </div>
   );
+
 }

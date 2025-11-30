@@ -13,9 +13,27 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+enum BugStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+}
+
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   username  String   
   email     String   @unique
   password  String
 }
+
+model Bug {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  status      BugStatus @default(PENDING)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+
