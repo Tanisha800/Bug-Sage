@@ -50,7 +50,7 @@ function getInitials(name) {
   return (parts[0][0] + parts[1][0]).toUpperCase();
 }
 
-export function AppSidebar() {
+export function AppSidebarDeveloper() {
   const pathname = usePathname();
   const router = useRouter();
   const { open } = useSidebar();
@@ -92,18 +92,7 @@ export function AppSidebar() {
           </div>
           <span className="font-semibold text-lg truncate">BugSage</span>
         </div>
-        <SidebarMenu className="mt-3 w-full">
-          <SidebarMenuItem>
-            <RaiseTicket>
-              <SidebarMenuButton asChild>
-                <button className="flex items-center gap-2 cursor-pointer bg-primary font-semibold text-white px-3 py-2 rounded-md transition w-full ">
-                  <IconCirclePlusFilled className="w-4 h-4" />
-                  <span>Raise a Ticket</span>
-                </button>
-              </SidebarMenuButton>
-              </RaiseTicket>
-          </SidebarMenuItem>
-        </SidebarMenu>
+       
       </SidebarHeader>
 
       {/* -------------------------------------- */}
@@ -118,9 +107,9 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === "/dashboard-tester"}
+                  isActive={pathname === "/dashboard-developer"}
                 >
-                  <Link href="/dashboard-tester">
+                  <Link href="/dashboard-developer">
                     <LayoutDashboard />
                     <span>Dashboard</span>
                   </Link>
@@ -131,9 +120,9 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === "/dashboard-tester/bugs"}
+                  isActive={pathname === "/dashboard-developer/bugs"}
                 >
-                  <Link href="/dashboard-tester/bugs">
+                  <Link href="/dashboard-developer/bugs">
                     <FolderKanban />
                     <span>Bugs</span>
                   </Link>
@@ -141,17 +130,7 @@ export function AppSidebar() {
               </SidebarMenuItem>
 
               {/* Team */}
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname === "/dashboard-tester/team"}
-                >
-                  <Link href="/dashboard-tester/team">
-                    <Users />
-                    <span>Team</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

@@ -3,10 +3,10 @@ import "../globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
 
-// 👇 same file se import karo jahan se SidebarProvider aata hai
+import { SiteHeader } from "@/components/site-header";
+import { AppSidebarDeveloper } from "@/components/app-sidebar-developer";
+
 
 
 const geistSans = Geist({
@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider>
           <AuthProvider>
-            <SidebarProvider><AppSidebar variant="inset" /><SidebarInset><SiteHeader/>{children}</SidebarInset></SidebarProvider></AuthProvider>
+            <SidebarProvider><AppSidebarDeveloper variant="inset" /><SidebarInset><SiteHeader/>{children}</SidebarInset></SidebarProvider></AuthProvider>
         </ThemeProvider>
       </body>
     </html>

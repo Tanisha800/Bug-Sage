@@ -17,6 +17,7 @@ import AsigneeUser from "./AsigneeUser";
 import { DatePicker } from "./DatePicker";
 import { Textarea } from "../ui/textarea";
 import ImageUploadModal from "./ImageUploadModal";
+import PrioritySelect from "./PrioritySelect";
 
 export default function RaiseTicket({ children }) {
   const id = useId();
@@ -112,12 +113,13 @@ export default function RaiseTicket({ children }) {
             </div>
 
             {/* Assignee - all developers of team */}
-            <div className="*:not-first:mt-2">
+            <div className="*:not-first:mt-2 flex justify-between items-center">
               {/* Assignee component should call onChange with selected developer id */}
               <AsigneeUser
                 value={assigneeId}
                 onChange={setAssigneeId}
               />
+              <PrioritySelect className="!m-0"/>
             </div>
 
             {/* Due date */}

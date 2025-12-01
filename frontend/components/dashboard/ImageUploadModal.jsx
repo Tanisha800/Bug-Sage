@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ImageUploadModal() {
   const maxSizeMB = 2;
-  const maxSize = maxSizeMB * 1024 * 1024; // 2MB default
+  const maxSize = maxSizeMB * 1024 * 1024;
 
   const [
     { files, isDragging, errors },

@@ -14,33 +14,32 @@ import {
 
 const Square = ({
   className,
-  children,
+  children
 }) => (
   <span
     aria-hidden="true"
     className={cn(
       "flex size-5 items-center justify-center rounded bg-muted font-medium text-muted-foreground text-xs",
-      className,
+      className
     )}
-    data-square
-  >
+    data-square>
     {children}
   </span>
 );
 
-export default function AsigneeUser() {
+export default function Component() {
   const id = useId();
   return (
-    <div className="">
-      <Label>Assign TO</Label>
+    <div className="*:not-first:mt-2">
+      <Label htmlFor={id}>Options with placeholder avatar</Label>
       <Select defaultValue="1">
         <SelectTrigger
           className="ps-2 [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_[data-square]]:shrink-0"
-          id={id}
-        >
+          id={id}>
           <SelectValue placeholder="Select framework" />
         </SelectTrigger>
-        <SelectContent className="[&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8">
+        <SelectContent
+          className="[&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8">
           <SelectGroup>
             <SelectLabel className="ps-2">Impersonate user</SelectLabel>
             <SelectItem value="1">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from "next/link";
 import axios from "axios";
+import RoleTab from '../dashboard/RoleTab';
 
 // --- HELPER COMPONENTS (same as in SignInPage) ---
 
@@ -91,7 +92,7 @@ export const SignUpPage = ({
   
       // redirect after success
       setTimeout(() => {
-        window.location.href = "/signin";
+        window.location.href = "/dashboard";
       }, 3000);                  
   
     } catch (err) {
@@ -115,6 +116,7 @@ export const SignUpPage = ({
             <p className="animate-element animate-delay-200 text-muted-foreground text-center max-w-md mx-auto">
               {description}
             </p>
+            <RoleTab className="w-full"/>
 
             <form className="space-y-5" onSubmit={handleSignUp}>
               {/* Full Name */}
@@ -206,29 +208,11 @@ export const SignUpPage = ({
               </button>
             </form>
 
-            <div className="animate-element animate-delay-800 relative flex items-center justify-center">
-              <span className="w-full border-t border-border"></span>
-              <span className="px-4 text-sm text-muted-foreground bg-background absolute">
-                Or continue with
-              </span>
-            </div>
+           
 
-            <button
-              onClick={onGoogleSignUp}
-              className="animate-element animate-delay-900 w-full flex items-center justify-center gap-3 border border-border rounded-2xl py-4 hover:bg-secondary transition-colors"
-            >
-              <GoogleIcon />
-              Sign up with Google
-            </button>
+            
 
-            <p className="animate-element animate-delay-1000 text-center text-sm text-muted-foreground">
-              Already have an account?{' '}
-              <Link
-          href="/signin"
-              className="text-violet-400 hover:underline transition-colors">
-                Sign In
-                </Link>
-            </p>
+            
           </div>
         </div>
       </section>

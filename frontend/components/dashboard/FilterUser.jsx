@@ -28,11 +28,10 @@ const Square = ({
   </span>
 );
 
-export default function AsigneeUser() {
+export default function FilterUser() {
   const id = useId();
   return (
     <div className="">
-      <Label>Assign TO</Label>
       <Select defaultValue="1">
         <SelectTrigger
           className="ps-2 [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_[data-square]]:shrink-0"

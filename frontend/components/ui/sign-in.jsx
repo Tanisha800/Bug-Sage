@@ -123,7 +123,7 @@ export const SignInPage = ({
                   className="hover:underline text-violet-400 transition-colors">Reset password</a>
               </div>
 
-              <button
+              <button 
                 type="submit"
                 className="animate-element animate-delay-600 w-full rounded-2xl bg-primary py-4 font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
                 Sign In

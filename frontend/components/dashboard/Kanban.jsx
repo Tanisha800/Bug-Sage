@@ -15,9 +15,10 @@ import { PlusIcon } from "lucide-react";
 // import TaskUpdateModal from "./TaskUpdateModal";
 
 const columns = [
-  { id: "To Do", name: "To Do", color: "#3B82F6", shadow: "rgba(59, 130, 246, 0.1)" },
+  { id: "Backlog", name: "Backlog", color: "#3B82F6", shadow: "rgba(59, 130, 246, 0.1)" },
   { id: "In Progress", name: "In Progress", color: "#F59E0B", shadow: "rgba(255,193,7,0.1)" },
-  { id: "Completed", name: "Completed", color: "#10B981", shadow: "rgba(16,185,129,0.1)" }
+  { id: "Testing", name: "Testing", color: "#A490F8", shadow: "rgba(16,185,129,0.1)" },
+  { id: "Resolved", name: "Resolved", color: "#10B981", shadow: "rgba(16,185,129,0.1)" }
 ];
 
 
@@ -187,11 +188,7 @@ const refreshTasks = async () => {
                 <div className="h-2 w-2 rounded-full" style={{ backgroundColor: column.color }} />
                 <span>{column.name}</span>
               </div>
-              <PlusIcon
-                className="h-5 w-5 cursor-pointer"
-                style={{ color: column.color }}
-
-              />
+              
             </div>
           </KanbanHeader>
 
