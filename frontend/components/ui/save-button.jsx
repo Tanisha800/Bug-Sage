@@ -54,8 +54,8 @@ export function SaveButton({
 
   const buttonVariants = {
     idle: {
-      backgroundColor: isDark ? "rgb(64, 64, 64)" : "rgb(243, 244, 246)",
-      color: isDark ? "white" : "black",
+      backgroundColor: "rgb(64, 64, 64)",
+      color: "white",
       scale: 1,
     },
     saving: {
@@ -89,7 +89,7 @@ export function SaveButton({
         className={cn(
           "group relative grid overflow-hidden rounded-full px-6 py-2 transition-all duration-200",
           status === "idle"
-            ? "shadow-[0_1000px_0_0_hsl(0_0%_85%)_inset] dark:shadow-[0_1000px_0_0_hsl(0_0%_20%)_inset]"
+            ? "shadow-[0_1000px_0_0_hsl(0_0%_20%)_inset]"
             : "",
           "hover:shadow-lg",
           className
@@ -112,7 +112,7 @@ export function SaveButton({
           className={cn(
             "backdrop absolute inset-px rounded-[22px] transition-colors duration-200",
             status === "idle"
-              ? "bg-neutral-100 group-hover:bg-neutral-200 dark:bg-neutral-950 dark:group-hover:bg-neutral-900"
+              ? "  bg-neutral-950 group-hover:bg-neutral-900"
               : ""
           )} />
         <span

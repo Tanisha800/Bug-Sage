@@ -36,7 +36,9 @@ function HeroSection() {
           left: "50%",
           transform: "translate(-50%, -50%)",
           textAlign: "center",
+          
         }}
+        className="flex justify-center flex-col items-center gap-6"
       >
         <SplitText
           text="“Squash Bugs Before They Squash You!”"
@@ -56,10 +58,11 @@ function HeroSection() {
  
     <SaveButton 
       text={{
-        idle: "Save me, please!",
+        idle: "Raise A Bug",
         saving: "Working on it...",
-        saved: "Saved! Woohoo!"
+        saved: "Resolved! Woohoo!"
       }}
+
     />
 
 

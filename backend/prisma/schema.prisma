@@ -24,6 +24,12 @@ enum BugStatus {
   RESOLVED
 }
 
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 // 👥 User model
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -61,6 +67,7 @@ model Bug {
   title       String
   description String?
   status      BugStatus @default(BACKLOG)
+  priority    Priority  @default(MEDIUM)
 
   // Reporter (TESTER)
   reporterId String @db.ObjectId

@@ -48,53 +48,66 @@ export const SignUpPage = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [role, setRole] = useState("TESTER");
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
     setLoading(true);
-  
+
     const formData = new FormData(e.target);
     const username = formData.get("fullName");
     const email = formData.get("email");
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
     console.log("Clicked")
-   
-  
+
+
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       setLoading(false);
       return;
     }
-  
+
     try {
       // ✅ use fetch instead of axios
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, role }),
       });
-  
+
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.error || "Signup failed!");
       }
-  
+
       const data = await res.json();
       console.log("✅ Signup response:", data);
-  
+
       // store token locally
       localStorage.setItem("token", data.token);
-      document.cookie = `token=${data.token}; path=/;`;
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Set cookie with proper attributes
+      document.cookie = `token=${data.token}; path=/; max-age=86400; SameSite=Lax`;
+
       setSuccess("Account created successfully!");
-  
+
       // redirect after success
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 3000);                  
-  
+      if (data.user.role == "TESTER") {
+        setTimeout(() => {
+          window.location.href = "/dashboard-tester";
+        }, 1500);
+      }
+      else if (data.user.role == "DEVELOPER") {
+        setTimeout(() => {
+          window.location.href = "/dashboard-developer";
+        }, 1500);
+      }
+
+
     } catch (err) {
       console.error("Signup error:", err);
       setError(err.message || "Network error. Please try again.");
@@ -102,7 +115,7 @@ export const SignUpPage = ({
       setLoading(false);
     }
   };
-  
+
 
   return (
     <div className="h-[100dvh] flex flex-col md:flex-row font-geist w-[100dvw]">
@@ -116,10 +129,11 @@ export const SignUpPage = ({
             <p className="animate-element animate-delay-200 text-muted-foreground text-center max-w-md mx-auto">
               {description}
             </p>
-            <RoleTab className="w-full"/>
+
+
 
             <form className="space-y-5" onSubmit={handleSignUp}>
-              {/* Full Name */}
+              <RoleTab className="w-full" onRoleChange={(value) => setRole(value)} />
               <div className="animate-element animate-delay-300">
                 <label className="text-sm font-medium text-muted-foreground">Full Name</label>
                 <GlassInputWrapper>
@@ -194,10 +208,10 @@ export const SignUpPage = ({
                       )}
                     </button>
                   </div>
-                  
+
                 </GlassInputWrapper>
                 {error && <p className="text-red-500 text-center">{error}</p>}
-        {success && <p className="text-green-500 text-center">{success}</p>}
+                {success && <p className="text-green-500 text-center">{success}</p>}
               </div>
 
               <button
@@ -208,11 +222,11 @@ export const SignUpPage = ({
               </button>
             </form>
 
-           
 
-            
 
-            
+
+
+
           </div>
         </div>
       </section>

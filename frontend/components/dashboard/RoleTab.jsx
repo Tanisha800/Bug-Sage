@@ -1,19 +1,24 @@
 import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-  } from "@/components/ui/tabs";
-  
-  export default function RoleTab() {
-    return (
-      <Tabs className="items-center" defaultValue="tab-1">
-        <TabsList>
-          <TabsTrigger value="tab-1">Tester</TabsTrigger>
-          <TabsTrigger value="tab-2">Developer</TabsTrigger>
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
-        </TabsList>
-      </Tabs>
-    );
-  }
-  
+export default function RoleTab({ onRoleChange }) {
+  return (
+    <Tabs
+
+      defaultValue="TESTER"
+      onValueChange={(value) => onRoleChange(value)}
+      className="items-center"
+
+    >
+      <TabsList>
+        <TabsTrigger value="TESTER">Tester</TabsTrigger>
+        <TabsTrigger value="DEVELOPER">Developer</TabsTrigger>
+
+      </TabsList>
+    </Tabs>
+  );
+}

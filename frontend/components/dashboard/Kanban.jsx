@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import axios from "@/lib/axios";
 import {
   KanbanBoard,
   KanbanCard,
@@ -29,37 +30,30 @@ export default function Kanban() {
   const [features, setFeatures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [taskModalOpen, setTaskModalOpen] = useState(false);
-const [defaultStatus, setDefaultStatus] = useState("todo");
-const [updateModalOpen, setUpdateModalOpen] = useState(false);
-const [selectedTask, setSelectedTask] = useState(null);
+  const [defaultStatus, setDefaultStatus] = useState("todo");
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 
 
   // ✅ Fetch tasks from backend
   useEffect(() => {
     const fetchTasks = async () => {
-      const token = localStorage.getItem("token");
       try {
-        const res = await fetch(`${API_URL}/api/tasks`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        if (res.ok) {
-          const formatted = data.tasks.map((t) => ({
-            id: t.id,
-            name: t.title,
-            column: t.status, // should match column id
-            startAt: new Date(t.startAt),
-            endAt: new Date(t.endAt),
-            owner: t.owner ? { name: t.owner.name, image: "/default.png" } : null,
-          }));
-          setFeatures(formatted);
-        } else {
-          console.error("Error fetching tasks:", data.error);
-        }
+        const res = await axios.get("/tasks");
+        const data = res.data;
+        const formatted = data.tasks.map((t) => ({
+          id: t.id,
+          name: t.title,
+          column: t.status, // should match column id
+          startAt: new Date(t.startAt),
+          endAt: new Date(t.endAt),
+          owner: t.owner ? { name: t.owner.name, image: "/default.png" } : null,
+        }));
+        setFeatures(formatted);
       } catch (err) {
-        console.error("Error fetching:", err);
+        console.error("Error fetching tasks:", err);
       } finally {
         setLoading(false);
       }
@@ -68,78 +62,24 @@ const [selectedTask, setSelectedTask] = useState(null);
   }, []);
 
   // ✅ Detect drag/drop column change
- // inside your Kanban page/component
- const handleDataChange = async (newData, meta) => {
-  setFeatures(newData);
-  const { movedItem, fromColumnId, toColumnId } = meta;
+  // inside your Kanban page/component
+  const handleDataChange = async (newData, meta) => {
+    setFeatures(newData);
+    const { movedItem, fromColumnId, toColumnId } = meta;
 
-  if (fromColumnId === toColumnId) {
-    return;
-  }
+    if (fromColumnId === toColumnId) {
+      return;
+    }
 
-  const refreshTasks = async () => {
-  const token = localStorage.getItem("token");
-  const res = await fetch(`${API_URL}/api/tasks`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  const data = await res.json();
-
-  if (res.ok) {
-    const formatted = data.tasks.map((t) => ({
-      id: t.id,
-      name: t.title,
-      column: t.status,
-      startAt: new Date(t.startAt),
-      endAt: new Date(t.endAt),
-    }));
-
-    setFeatures(formatted);
-  }
-};
-
-
-
-  try {
-    const token = localStorage.getItem("token");
-    const res = await fetch(`${API_URL}/api/tasks/${movedItem.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ status: toColumnId }),
-    });
-
-  } catch (err) {
-    console.error("Error calling backend:", err);
-  }
-};
-const refreshTasks = async () => {
-  const token = localStorage.getItem("token");
-  const res = await fetch(`${API_URL}/api/tasks`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  const data = await res.json();
-
-  if (res.ok) {
-    const formatted = data.tasks.map((t) => ({
-      id: t.id,
-      name: t.title,
-      column: t.status,
-      startAt: new Date(t.startAt),
-      endAt: new Date(t.endAt),
-    }));
-
-    setFeatures(formatted);
-  }
-};
-
+    try {
+      await axios.put(`/tasks/${movedItem.id}`, { status: toColumnId });
+    } catch (err) {
+      console.error("Error calling backend:", err);
+    }
+  };
 
   // ✅ Add new task
   const handleAddTask = async (columnId) => {
-    const token = localStorage.getItem("token");
     const newTask = {
       title: "New Task",
       status: columnId,
@@ -148,27 +88,18 @@ const refreshTasks = async () => {
     };
 
     try {
-      const res = await fetch(`${API_URL}/api/tasks`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const res = await axios.post("/tasks", newTask);
+      const data = res.data;
+      setFeatures((prev) => [
+        ...prev,
+        {
+          id: data.id,
+          name: data.title,
+          column: data.status,
+          startAt: new Date(data.startAt),
+          endAt: new Date(data.endAt),
         },
-        body: JSON.stringify(newTask),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setFeatures((prev) => [
-          ...prev,
-          {
-            id: data.id,
-            name: data.title,
-            column: data.status,
-            startAt: new Date(data.startAt),
-            endAt: new Date(data.endAt),
-          },
-        ]);
-      }
+      ]);
     } catch (err) {
       console.error("Error adding:", err);
     }
@@ -188,7 +119,7 @@ const refreshTasks = async () => {
                 <div className="h-2 w-2 rounded-full" style={{ backgroundColor: column.color }} />
                 <span>{column.name}</span>
               </div>
-              
+
             </div>
           </KanbanHeader>
 
@@ -226,7 +157,7 @@ const refreshTasks = async () => {
         </KanbanBoard>
       )}
     </KanbanProvider>
-    
-    </>
+
+  </>
   );
 }

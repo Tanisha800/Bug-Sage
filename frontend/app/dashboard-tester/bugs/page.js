@@ -11,6 +11,7 @@ function page() {
 
       </div>
       <Kanban/>
+      
     </div>
     </div>
   )

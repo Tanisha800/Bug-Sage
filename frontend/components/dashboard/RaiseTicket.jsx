@@ -31,6 +31,7 @@ export default function RaiseTicket({ children }) {
   const [assigneeId, setAssigneeId] = useState(null);
   const [dueDate, setDueDate] = useState(null);
   const [attachmentUrl, setAttachmentUrl] = useState(null);
+  const [priority, setPriority] = useState("MEDIUM");
   const [submitting, setSubmitting] = useState(false);
 
 
@@ -53,6 +54,7 @@ export default function RaiseTicket({ children }) {
           assigneeId,
           dueDate,        // DatePicker se ISO string / Date aayega
           attachmentUrl,  // ImageUploadModal se URL / path aayega
+          priority,
         },
         {
           withCredentials: true, // agar cookies / auth use ho raha ho
@@ -65,6 +67,7 @@ export default function RaiseTicket({ children }) {
       setAssigneeId(null);
       setDueDate(null);
       setAttachmentUrl(null);
+      setPriority("MEDIUM");
       setOpen(false);
     } catch (err) {
       console.error("Failed to raise bug:", err);
@@ -119,7 +122,11 @@ export default function RaiseTicket({ children }) {
                 value={assigneeId}
                 onChange={setAssigneeId}
               />
-              <PrioritySelect className="!m-0"/>
+              <PrioritySelect
+                className="!m-0"
+                value={priority}
+                onChange={setPriority}
+              />
             </div>
 
             {/* Due date */}

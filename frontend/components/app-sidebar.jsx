@@ -57,11 +57,23 @@ export function AppSidebar() {
   const { theme, setTheme } = useTheme();
 
   // Dummy user (replace with your context later)
-  const user = {
-    name: "Tanisha",
-    email: "tanisha@example.com",
+  const [user, setUser] = React.useState({
+    name: "User",
+    email: "user@example.com",
     avatar: null,
-  };
+  });
+
+  React.useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser({
+        name: parsedUser.username || "User",
+        email: parsedUser.email || "user@example.com",
+        avatar: null, // Add avatar logic if available in backend later
+      });
+    }
+  }, []);
   // const data ={navSecondary: [
   //   {
   //     title: "Settings",
@@ -101,7 +113,7 @@ export function AppSidebar() {
                   <span>Raise a Ticket</span>
                 </button>
               </SidebarMenuButton>
-              </RaiseTicket>
+            </RaiseTicket>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -180,7 +192,7 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              
+
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

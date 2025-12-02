@@ -25,12 +25,12 @@ function StatusDot({ className }) {
   );
 }
 
-export default function PrioritySelect() {
+export default function PrioritySelect({ value, onChange, className }) {
   const id = useId();
   return (
-    <div className="">
+    <div className={className}>
       <Label htmlFor={id}>Status Priority</Label>
-      <Select defaultValue="Select">
+      <Select value={value} onValueChange={onChange}>
         <SelectTrigger
           className="[&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0"
           id={id}
@@ -38,21 +38,21 @@ export default function PrioritySelect() {
           <SelectValue placeholder="Select status" />
         </SelectTrigger>
         <SelectContent className="[&_*[role=option]>span>svg]:shrink-0 [&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8">
-          
-          <SelectItem value="Low">
+
+          <SelectItem value="LOW">
             <span className="flex items-center gap-2">
               <StatusDot className="text-blue-500" />
               <span className="truncate">Low</span>
             </span>
           </SelectItem>
-          <SelectItem value="Medium">
+          <SelectItem value="MEDIUM">
             <span className="flex items-center gap-2">
               <StatusDot className="text-amber-500" />
               <span className="truncate">Medium</span>
             </span>
           </SelectItem>
-         
-          <SelectItem value="High">
+
+          <SelectItem value="HIGH">
             <span className="flex items-center gap-2">
               <StatusDot className="text-red-500" />
               <span className="truncate">High</span>

@@ -1,11 +1,12 @@
 "use client"
-import Signin from '@/components/signin'
 import { SignInPage } from '@/components/ui/sign-in'
 import React from 'react'
 
 function page() {
   return (
-    <div><Signin/></div>
+    <div className="bg-background text-foreground">
+      <SignInPage />
+    </div>
   )
 }
 

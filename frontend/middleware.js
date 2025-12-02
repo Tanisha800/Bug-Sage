@@ -4,6 +4,7 @@ export function middleware(req) {
   const token = req.cookies.get("token")?.value || req.headers.get("authorization");
   const url = req.nextUrl.clone();
 
+
   if (!token && url.pathname.startsWith("/dashboard")) {
     url.pathname = "/signup";
     return NextResponse.redirect(url);
