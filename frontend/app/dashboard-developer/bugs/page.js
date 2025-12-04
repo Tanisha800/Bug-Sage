@@ -1,4 +1,3 @@
-import FilterUser from '@/components/dashboard/FilterUSer'
 import Kanban from '@/components/dashboard/Kanban'
 
 import React from 'react'
