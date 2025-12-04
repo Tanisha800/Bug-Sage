@@ -6,6 +6,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 import { SiteHeader } from "@/components/site-header";
 import { AppSidebarDeveloper } from "@/components/app-sidebar-developer";
+import UserProvider from "../providers/UserProvider";
 
 
 
@@ -31,8 +32,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
+          <UserProvider>
           <AuthProvider>
-            <SidebarProvider><AppSidebarDeveloper variant="inset" /><SidebarInset><SiteHeader/>{children}</SidebarInset></SidebarProvider></AuthProvider>
+            <SidebarProvider><AppSidebarDeveloper variant="inset" /><SidebarInset><SiteHeader/>{children}</SidebarInset></SidebarProvider></AuthProvider></UserProvider>
         </ThemeProvider>
       </body>
     </html>

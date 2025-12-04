@@ -1,8 +1,5 @@
 "use client"
-import AddMember from '@/components/dashboard/AddMember'
 import TeamMember from '@/components/dashboard/TeamMember'
-import { Button } from '@/components/ui/button'
-import { PlusIcon } from 'lucide-react'
 import React from 'react'
 
 
@@ -10,18 +7,19 @@ function page() {
   return (
     <div className="p-4 lg:p-6">
       <div className="@container/main flex flex-1 flex-col gap-2">
-      <div className='py-2 pb-8 flex  justify-between items-center'>
-      <h1 className='font-readex font-semibold text-5xl text-foreground'>Team</h1>
-      <AddMember/>
+        <div className='py-2 pb-8 flex  justify-between items-center'>
+          <h1 className='font-readex font-semibold text-5xl text-foreground'>Team</h1>
+
+        </div>
+        <div className='bg-gray-100 p-2 rounded-2xl dark:bg-neutral-800'>
+
+          <TeamMember />
+
+        </div>
+
       </div>
-      <div className='bg-gray-100 p-2 rounded-2xl dark:bg-neutral-800'> 
-
-<TeamMember/>
-
-</div>
-      
     </div>
-    </div>
-)}
+  )
+}
 
 export default page

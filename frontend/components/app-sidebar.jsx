@@ -42,6 +42,7 @@ import { NavSecondary } from "./nav-secondary";
 import { NavUser } from "./nav-user";
 import { IconCirclePlusFilled } from "@tabler/icons-react";
 import RaiseTicket from "./dashboard/RaiseTicket";
+import { useUser } from "@/app/providers/UserProvider";
 
 function getInitials(name) {
   if (!name) return "?";
@@ -57,41 +58,50 @@ export function AppSidebar() {
   const { theme, setTheme } = useTheme();
 
   // Dummy user (replace with your context later)
-  const [user, setUser] = React.useState({
-    name: "User",
-    email: "user@example.com",
-    avatar: null,
-  });
+  // const [user, setUser] = React.useState({
+  //   name: "User",
+  //   email: "user@example.com",
+  //   avatar: null,
+  // });
 
-  React.useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser({
-        name: parsedUser.username || "User",
-        email: parsedUser.email || "user@example.com",
-        avatar: null, // Add avatar logic if available in backend later
-      });
-    }
-  }, []);
-  // const data ={navSecondary: [
-  //   {
-  //     title: "Settings",
-  //     url: "#",
-  //     icon: SettingsIcon,
-  //   },
-  //   {
-  //     title: "Get Help",
-  //     url: "#",
-  //     icon: HelpCircleIcon,
-  //   },
-  //   {
-  //     title: "Search",
-  //     url: "#",
-  //     icon: SearchIcon,
-  //   },
-  // ],}
+const { user, loading } = useUser();
 
+
+
+  if (loading) {
+    
+    return null;
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  // 3) Safe user object bana lo (backend se aane wale fields ke hisab se)
+  const safeUser = {
+    name: user.name || user.username || "User",
+    email: user.email || "user@example.com",
+    avatar: user.avatar || null,
+    role: user.role || "tester",
+    id: user.id || null,
+    teamId: user.teamId || null,
+  };
+
+  // React.useEffect(() => {
+  //   const storedUser = localStorage.getItem("user");
+  //   if (storedUser) {
+  //     const parsedUser = JSON.parse(storedUser);
+  //     setUser({
+  //       name: parsedUser.username || "User",
+  //       email: parsedUser.email || "user@example.com",
+  //       avatar: null, // Add avatar logic if available in backend later
+  //     });
+  //   }
+  // }, []);
+
+if (!user){
+  return null;
+}
   return (
     <Sidebar variant="floating" collapsible="icon">
       {/* -------------------------------------- */}
@@ -203,7 +213,7 @@ export function AppSidebar() {
       {/* FOOTER - USER PROFILE */}
       {/* -------------------------------------- */}
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={safeUser} />
       </SidebarFooter>
     </Sidebar>
   );

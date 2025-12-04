@@ -289,7 +289,7 @@ router.get("/assignees/list", requireAuth, async (req, res) => {
       },
       select: {
         id: true,
-        name: true,
+        username: true,
         email: true,
       },
     });

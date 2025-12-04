@@ -7,6 +7,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 import data from "./data.json"
 import BugViewer from "@/components/dashboard/BugViewer"
+import JoinTeam from "@/components/dashboard/JoinTeam"
 
 
 
@@ -22,7 +23,7 @@ export default function Page() {
                 <ChartAreaInteractive />
               </div> */}
               <DataTable data={data} />
-              
+              <JoinTeam/>
       
             </div>
           </div>

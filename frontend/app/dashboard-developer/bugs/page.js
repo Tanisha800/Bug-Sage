@@ -1,5 +1,6 @@
 import FilterUser from '@/components/dashboard/FilterUSer'
 import Kanban from '@/components/dashboard/Kanban'
+
 import React from 'react'
 
 function page() {
@@ -10,6 +11,7 @@ function page() {
       <h1 className='font-readex font-semibold text-5xl text-foreground '>Bugs</h1> 
 
       </div>
+
       <Kanban/>
     </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, useEffect } from "react";
 import axios from "@/lib/axios";
 
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ import { Textarea } from "../ui/textarea";
 import ImageUploadModal from "./ImageUploadModal";
 import PrioritySelect from "./PrioritySelect";
 
-export default function RaiseTicket({ children }) {
+export default function RaiseTicket({ children, onSuccess }) {
   const id = useId();
 
   // dialog open/close
@@ -34,44 +34,104 @@ export default function RaiseTicket({ children }) {
   const [priority, setPriority] = useState("MEDIUM");
   const [submitting, setSubmitting] = useState(false);
 
+  // Debug: Check authentication on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    
+    console.log('🔍 Auth Check:', {
+      hasToken: !!token,
+      hasUser: !!user,
+      tokenPreview: token ? token.substring(0, 20) + '...' : 'none'
+    });
+
+    if (!token) {
+      console.warn('⚠️ No authentication token found. User needs to login.');
+    }
+  }, [open]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation
     if (!assigneeId) {
       alert("Please select an assignee");
+      return;
+    }
+
+    // Debug: Log form data
+    console.log('📝 Form Data:', {
+      title,
+      description,
+      assigneeId,
+      dueDate,
+      attachmentUrl,
+      priority
+    });
+
+    // Check authentication before submitting
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("You must be logged in to create a bug");
       return;
     }
 
     try {
       setSubmitting(true);
 
-      await axios.post(
-        `/bugs`, // <-- yahan tumhara bug.js router mounted hai
-        {
-          title,
-          description,
-          assigneeId,
-          dueDate,        // DatePicker se ISO string / Date aayega
-          attachmentUrl,  // ImageUploadModal se URL / path aayega
-          priority,
-        },
-        {
-          withCredentials: true, // agar cookies / auth use ho raha ho
-        }
-      );
+      console.log('🚀 Submitting bug to /bugs endpoint...');
 
-      // success: clear + close
+      const response = await axios.post('/api/kanban', {
+        title,
+        description,
+        assigneeId,
+        dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+        attachmentUrl: attachmentUrl || null,
+        priority,
+      });
+
+      console.log('✅ Bug created successfully:', response.data);
+
+      // Show success message
+      alert('Bug raised successfully!');
+
+      // Clear form
       setTitle("");
       setDescription("");
       setAssigneeId(null);
       setDueDate(null);
       setAttachmentUrl(null);
       setPriority("MEDIUM");
+      
+      // Close dialog
       setOpen(false);
+
+      // Call onSuccess callback if provided
+      if (onSuccess) {
+        onSuccess(response.data.bug);
+      }
+
     } catch (err) {
-      console.error("Failed to raise bug:", err);
-      alert("Failed to raise bug. Check console for details.");
+      console.error("❌ Failed to raise bug:", err);
+      console.error("Error details:", {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status
+      });
+
+      // Show user-friendly error message
+      const errorMessage = err.response?.data?.error || 
+                          err.response?.data?.message || 
+                          'Failed to raise bug. Please try again.';
+      
+      alert(errorMessage);
+
+      // If unauthorized, suggest login
+      if (err.response?.status === 401) {
+        alert('Please login again to continue');
+        // Optionally redirect to login
+        // window.location.href = '/login';
+      }
     } finally {
       setSubmitting(false);
     }
@@ -117,7 +177,6 @@ export default function RaiseTicket({ children }) {
 
             {/* Assignee - all developers of team */}
             <div className="*:not-first:mt-2 flex justify-between items-center">
-              {/* Assignee component should call onChange with selected developer id */}
               <AsigneeUser
                 value={assigneeId}
                 onChange={setAssigneeId}
@@ -141,7 +200,7 @@ export default function RaiseTicket({ children }) {
             <div className="*:not-first:mt-2">
               <Label>Attachments</Label>
               <ImageUploadModal
-                onUpload={setAttachmentUrl} // expect this to give URL / file path
+                onUpload={setAttachmentUrl}
               />
             </div>
           </div>

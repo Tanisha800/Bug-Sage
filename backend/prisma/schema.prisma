@@ -19,7 +19,8 @@ enum UserRole {
 
 enum BugStatus {
   BACKLOG
-  PENDING
+  TESTING
+  TESTER
   IN_PROGRESS
   RESOLVED
 }

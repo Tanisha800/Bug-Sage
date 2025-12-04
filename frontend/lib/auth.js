@@ -1,7 +1,7 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"; // backend URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"; // backend URL
 
 export const login = async (email, password) => {
   const res = await axios.post(`${API_URL}/login`, { email, password });

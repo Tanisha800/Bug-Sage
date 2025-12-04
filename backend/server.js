@@ -8,6 +8,11 @@ import cors from "cors";
 import taskRouter from "./routes/tasks.js";
 import bugRouter from "./routes/bug.js"
 import authenticateMiddleware from "./middleware.js";
+import authUserRouter from "./routes/auth.js";
+import jointeamRoutes from "./routes/joinTeam.js";
+import teamRoutes from "./routes/team.js";
+import kanbanRouter from "./routes/kanban.js";
+
 
 // Load environment variables
 dotenv.config();
@@ -21,6 +26,9 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 }));
+app.use('/api/team', teamRoutes);
+app.use("/api/jointeams", jointeamRoutes);
+app.use("/api/kanban", kanbanRouter);
 
 app.get("/", (req, res) => {
   res.send("🚀 Server is running with Prisma + MongoDB + JWT!");
@@ -36,7 +44,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey123";
 // ✅ Test route
 
 
-
+app.use("/api/auth", authUserRouter);
 
 // 🧾 SIGNUP (Register)
 app.post("/signup", async (req, res) => {
@@ -70,7 +78,7 @@ app.post("/signup", async (req, res) => {
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email, role: newUser.role, teamId: newUser.teamId },
       JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "7d" }
     );
 
     res.status(201).json({
@@ -111,7 +119,7 @@ app.post("/login", async (req, res) => {
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role, teamId: user.teamId },
       JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "7d" }
     );
 
     res.json({ message: "Login successful!", token, user: { id: user.id, username: user.username, email: user.email, role: user.role } });
@@ -151,9 +159,11 @@ app.get("/users", verifyToken, async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 app.use(authenticateMiddleware)
 app.use("/tasks", taskRouter);
 app.use("/bugs", bugRouter);
+
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -33,7 +33,7 @@ export function NavUser({
   user
 }) {
   const { isMobile } = useSidebar()
-
+  console.log("👤 NavUser user prop:", user);
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -51,7 +51,9 @@ export function NavUser({
                 <span className="truncate text-xs text-muted-foreground">
                   {user.email}
                 </span>
+
               </div>
+              <div className="bg-amber-800 flex justify-center items-center rounded-2xl p-2"><span className="text-[8px] font-extrabold text-white" >{user.role}</span></div>
               <MoreVerticalIcon className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>

@@ -25,7 +25,7 @@ export default function authenticateMiddleware(req, res, next) {
         };
 
         // Debug ke liye
-        console.log("Inside authMiddleware, req.user =", req.user);
+
 
         next();
     } catch (err) {
