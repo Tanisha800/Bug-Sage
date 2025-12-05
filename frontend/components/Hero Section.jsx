@@ -10,33 +10,33 @@ function HeroSection() {
   return (
 
     <div style={{ width: "100%", height: "100vh", position: "relative" }}>
-  
-  <LetterGlitch
-    glitchSpeed={50}
-    centerVignette={true}
-    outerVignette={false}
-    smooth={true}
-  /><div
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundColor: "black",
-      opacity: 0.5,
-      pointerEvents: "none", // so overlay doesn’t block interactions
-    }}
-    
-  />
-  <div
+
+      <LetterGlitch
+        glitchSpeed={50}
+        centerVignette={true}
+        outerVignette={false}
+        smooth={true}
+      /><div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "black",
+          opacity: 0.5,
+          pointerEvents: "none", // so overlay doesn’t block interactions
+        }}
+
+      />
+      <div
         style={{
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
           textAlign: "center",
-          
+
         }}
         className="flex justify-center flex-col items-center gap-6"
       >
@@ -55,20 +55,20 @@ function HeroSection() {
 
 
 
- 
-    <SaveButton 
-      text={{
-        idle: "Raise A Bug",
-        saving: "Working on it...",
-        saved: "Resolved! Woohoo!"
-      }}
 
-    />
+        <SaveButton
+          text={{
+            idle: "Raise A Bug",
+            saving: "Working on it...",
+            saved: "Resolved! Woohoo!"
+          }}
+
+        />
 
 
       </div>
       <div style={{ position: "fixed", top: 200, left: 200 }}>
-       
+
       </div>
     </div>
   );

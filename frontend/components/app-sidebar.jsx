@@ -150,7 +150,7 @@ if (!user){
               </SidebarMenuItem>
 
               {/* Projects */}
-              <SidebarMenuItem>
+              {/* <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === "/dashboard-tester/bugs"}
@@ -160,7 +160,7 @@ if (!user){
                     <span>Bugs</span>
                   </Link>
                 </SidebarMenuButton>
-              </SidebarMenuItem>
+              </SidebarMenuItem> */}
 
               {/* Team */}
               <SidebarMenuItem>

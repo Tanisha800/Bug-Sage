@@ -22,21 +22,21 @@ const demoData = {
         imageAlt: "AI Bug Detection",
       },
     },
-    {
-      value: "tab-2",
-      icon: <Brain className="h-auto w-4 shrink-0" />,
-      label: "AI Productivity",
-      content: {
-        badge: "Intelligent Workflow",
-        title: "Let AI handle the boring stuff.",
-        description:
-          "From auto-assigning developers to detecting duplicate issues — BugPilot’s AI learns your workflow and optimizes bug management so your team can focus on what matters: coding.",
-        buttonText: "See AI Features",
-        imageSrc:
-          "https://www.shadcnblocks.com/images/block/placeholder-dark-2.svg",
-        imageAlt: "AI Workflow",
-      },
-    },
+    // {
+    //   value: "tab-2",
+    //   icon: <Brain className="h-auto w-4 shrink-0" />,
+    //   label: "AI Productivity",
+    //   content: {
+    //     badge: "Intelligent Workflow",
+    //     title: "Let AI handle the boring stuff.",
+    //     description:
+    //       "From auto-assigning developers to detecting duplicate issues — BugPilot’s AI learns your workflow and optimizes bug management so your team can focus on what matters: coding.",
+    //     buttonText: "See AI Features",
+    //     imageSrc:
+    //       "https://www.shadcnblocks.com/images/block/placeholder-dark-2.svg",
+    //     imageAlt: "AI Workflow",
+    //   },
+    // },
     {
       value: "tab-3",
       icon: <LayoutDashboard className="h-auto w-4 shrink-0" />,

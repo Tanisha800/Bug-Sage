@@ -115,9 +115,6 @@ export function AppSidebarDeveloper() {
        
       </SidebarHeader>
 
-      {/* -------------------------------------- */}
-      {/* MAIN NAVIGATION */}
-      {/* -------------------------------------- */}
       <SidebarContent className="overflow-y-auto overflow-x-hidden">
         <SidebarGroup>
           <SidebarGroupLabel>Main</SidebarGroupLabel>
@@ -149,7 +146,17 @@ export function AppSidebarDeveloper() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {/* Team */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/dashboard-developer/team"}
+                >
+                  <Link href="/dashboard-developer/team">
+                    <Users />
+                    <span>Team</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               
             </SidebarMenu>
           </SidebarGroupContent>

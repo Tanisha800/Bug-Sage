@@ -63,8 +63,16 @@ const demoPlans = [
 
 function PricingBasic() {
   return (
-    <div className="overflow-y-auto rounded-lg">
-      <Pricing 
+    <div className="dark bg-black text-white overflow-y-auto rounded-lg">
+      <style jsx global>{`
+        .dark {
+          color-scheme: dark;
+        }
+        .dark * {
+          border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+      `}</style>
+      <Pricing
         plans={demoPlans}
         title="BugSage Pricing Plans"
         description="Pick the plan that fits your team. All plans include AI-powered bug tracking, Kanban boards, and analytics to streamline your workflow."
