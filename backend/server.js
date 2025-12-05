@@ -33,7 +33,7 @@ app.use("/api/kanban", kanbanRouter);
 app.get("/", (req, res) => {
   res.send("🚀 Server is running with Prisma + MongoDB + JWT!");
 });
-
+app.use("/tasks", taskRouter);
 
 // Initialize Prisma Client
 const prisma = new PrismaClient();
@@ -161,7 +161,7 @@ app.get("/users", verifyToken, async (req, res) => {
 });
 
 app.use(authenticateMiddleware)
-app.use("/tasks", taskRouter);
+
 app.use("/bugs", bugRouter);
 
 
