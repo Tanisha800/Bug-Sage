@@ -63,15 +63,7 @@ const demoPlans = [
 
 function PricingBasic() {
   return (
-    <div className="dark bg-black text-white overflow-y-auto rounded-lg">
-      <style jsx global>{`
-        .dark {
-          color-scheme: dark;
-        }
-        .dark * {
-          border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-      `}</style>
+    <div className="overflow-y-auto rounded-lg">
       <Pricing
         plans={demoPlans}
         title="BugSage Pricing Plans"

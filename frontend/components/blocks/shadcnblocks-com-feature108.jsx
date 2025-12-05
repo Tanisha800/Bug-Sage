@@ -58,15 +58,7 @@ const Feature108 = ({
   ]
 }) => {
   return (
-    <section className="dark py-32 bg-neutral-950 text-white">
-      <style jsx>{`
-        section.dark {
-          color-scheme: dark;
-        }
-        section.dark * {
-          border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-      `}</style>
+    <section className="py-32 bg-neutral-950">
       <div className="container mx-auto">
         <div className="flex flex-col items-center gap-4 text-center">
           <Badge variant="outline">{badge}</Badge>
