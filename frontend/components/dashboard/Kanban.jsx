@@ -14,6 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import UpdateBug from "./UpdateBug";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import { se } from "date-fns/locale";
+import { Button } from "../ui/button";
+import { Trash2 } from "lucide-react";
 
 // Updated columns to match BugStatus enum
 const columns = [
@@ -46,6 +48,7 @@ export default function BugKanban() {
   const [loading, setLoading] = useState(true);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedBug, setSelectedBug] = useState(null);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   // ✅ Fetch bugs assigned to logged-in developer
   useEffect(() => {
@@ -80,7 +83,39 @@ export default function BugKanban() {
     
     fetchBugs();
   }, []);
+const handleDeleteBug = async (bugId) => {
+  try {
+    const response = await fetch(`${API_URL}/tasks/${bugId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add authorization if needed
+        // 'Authorization': `Bearer ${token}`
+      },
+    });
 
+    if (response.ok) {
+      // Close the dialog
+      setSelectedBug(null);
+      
+      // Refresh the bugs list or remove from state
+      // Option 1: Refresh the entire list
+      // fetchBugs();
+      
+      // Option 2: Remove from local state (faster)
+      setBugs(bugs.filter(bug => bug.id !== bugId));
+      
+      // Show success message (optional - if you're using toast)
+      // toast.success('Bug deleted successfully');
+    } else {
+      console.error('Failed to delete bug');
+      // toast.error('Failed to delete bug');
+    }
+  } catch (error) {
+    console.error('Error deleting bug:', error);
+    // toast.error('An error occurred while deleting the bug');
+  }
+};
   // ✅ Handle drag/drop status change
   const handleDataChange = async (newData, meta) => {
     setBugs(newData);
@@ -332,6 +367,30 @@ export default function BugKanban() {
         <div className="border-t pt-3 md:pt-4">
           
         </div>
+        <div className="border-t pt-3 md:pt-4 flex justify-between items-center">
+  <Button
+    variant="destructive"
+    size="sm"
+    onClick={() => {
+      if (window.confirm('Are you sure you want to delete this bug?')) {
+        handleDeleteBug(selectedBug.id);
+      }
+    }}
+    className="gap-2"
+  >
+    <Trash2 className="h-4 w-4" />
+    Delete Bug
+  </Button>
+  
+  {/* Add other action buttons here if needed */}
+  <Button
+    variant="outline"
+    size="sm"
+    onClick={() => setSelectedBug(null)}
+  >
+    Close
+  </Button>
+</div>
       </div>
     </DialogContent>
   </Dialog>

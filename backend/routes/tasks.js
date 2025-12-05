@@ -85,17 +85,19 @@ router.patch('/:id/status', async (req, res) => {
     res.status(500).json({ message: 'Failed to update bug status' });
   }
 });
-router.delete("/:id/status",async(req,res)=>{
-    const { id } = req.params.id;
+router.delete("/:id", async (req, res) => {
+    const { id } = req.params; // Remove .id, params is already the object
 
-    try{
-        await prisma.bug.delete({where:id})
-        return res.status(200).json({ message: 'Deleted Succesfully' })
-    }
-    catch(err){
+    try {
+        await prisma.bug.delete({
+            where: { id } // Wrap in object
+        });
+        return res.status(200).json({ message: 'Deleted Successfully' });
+    } catch (err) {
         console.error('Error deleting bug:', err);
+        return res.status(500).json({ error: 'Failed to delete bug' });
     }
-})
+});
 
 /**
  * GET /bugs/stats/summary
