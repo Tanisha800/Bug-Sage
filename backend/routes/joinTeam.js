@@ -1,10 +1,10 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import prisma from "../prismaClient.js"; // apne project ke path ke hisaab se
+import prisma from "../prismaClient.js";
 
 const router = express.Router();
 
-// 🟢 Get all teams (for dropdown)
+
 router.get("/", async (req, res) => {
   try {
     const teams = await prisma.team.findMany({
@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// 🟢 Join a team (set user.teamId)
+
 router.post("/join", async (req, res) => {
   try {
     const tokenHeader = req.headers.authorization;
@@ -30,16 +30,16 @@ router.post("/join", async (req, res) => {
     }
 
     const token = tokenHeader.split(" ")[1];
+    const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey123";
 
     let decoded;
     try {
-      decoded = jwt.verify(token, "supersecretkey123");
+      decoded = jwt.verify(token, JWT_SECRET);
     } catch (err) {
-
       return res.status(401).json({ error: "Invalid or expired token" });
     }
 
-    const userId = decoded.id; // tum /me route mein bhi yehi use kar rahi thi
+    const userId = decoded.id;
 
     const { teamId } = req.body;
 
@@ -47,7 +47,6 @@ router.post("/join", async (req, res) => {
       return res.status(400).json({ error: "teamId is required" });
     }
 
-    // Optional: check if team exists
     const team = await prisma.team.findUnique({
       where: { id: teamId },
     });
@@ -56,16 +55,34 @@ router.post("/join", async (req, res) => {
       return res.status(404).json({ error: "Team not found" });
     }
 
-    // Update user's teamId
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { teamId },
       include: { team: true },
     });
 
+    // ✅ Generate new JWT token with updated teamId
+    const newToken = jwt.sign(
+      {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        teamId: updatedUser.teamId
+      },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
     res.json({
       message: "Joined team successfully",
-      user: updatedUser,
+      token: newToken, // ✅ Return new token
+      user: {
+        id: updatedUser.id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        teamId: updatedUser.teamId,
+      },
     });
   } catch (err) {
     console.error("Error joining team:", err);

@@ -68,6 +68,7 @@ export default function ImageUploadModal() {
                 className="mt-4"
                 onClick={openFileDialog}
                 variant="outline"
+                type="button"
               >
                 <UploadIcon
                   aria-hidden="true"
@@ -103,7 +104,7 @@ export default function ImageUploadModal() {
         </div>
       )}
 
-      
+
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import UserProvider from "../providers/UserProvider";
+import RoleProtection from "@/components/RoleProtection";
 
 
 
@@ -32,8 +33,12 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider>
           <UserProvider>
-          <AuthProvider>
-            <SidebarProvider><AppSidebar variant="inset" /><SidebarInset><SiteHeader/>{children}</SidebarInset></SidebarProvider></AuthProvider></UserProvider>
+            <AuthProvider>
+              <RoleProtection requiredRole="TESTER">
+                <SidebarProvider><AppSidebar variant="inset" /><SidebarInset><SiteHeader />{children}</SidebarInset></SidebarProvider>
+              </RoleProtection>
+            </AuthProvider>
+          </UserProvider>
         </ThemeProvider>
       </body>
     </html>

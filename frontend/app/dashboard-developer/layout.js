@@ -3,10 +3,10 @@ import "../globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-
 import { SiteHeader } from "@/components/site-header";
 import { AppSidebarDeveloper } from "@/components/app-sidebar-developer";
 import UserProvider from "../providers/UserProvider";
+import RoleProtection from "@/components/RoleProtection";
 
 
 
@@ -33,8 +33,12 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider>
           <UserProvider>
-          <AuthProvider>
-            <SidebarProvider><AppSidebarDeveloper variant="inset" /><SidebarInset><SiteHeader/>{children}</SidebarInset></SidebarProvider></AuthProvider></UserProvider>
+            <AuthProvider>
+              <RoleProtection requiredRole="DEVELOPER">
+                <SidebarProvider><AppSidebarDeveloper variant="inset" /><SidebarInset><SiteHeader />{children}</SidebarInset></SidebarProvider>
+              </RoleProtection>
+            </AuthProvider>
+          </UserProvider>
         </ThemeProvider>
       </body>
     </html>

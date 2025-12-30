@@ -58,27 +58,27 @@ export function AppSidebarDeveloper() {
   const { theme, setTheme } = useTheme();
 
   const { user, loading } = useUser();
-  
-  
-  
-    if (loading) {
-      
-      return null;
-    }
-  
-    if (!user) {
-      return null;
-    }
-  
-    // 3) Safe user object bana lo (backend se aane wale fields ke hisab se)
-    const safeUser = {
-      name: user.name || user.username || "User",
-      email: user.email || "user@example.com",
-      avatar: user.avatar || null,
-      role: user.role || "tester",
-      id: user.id || null,
-      teamId: user.teamId || null,
-    };
+
+
+
+  if (loading) {
+
+    return null;
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  // 3) Safe user object bana lo (backend se aane wale fields ke hisab se)
+  const safeUser = {
+    name: user.name || user.username || "User",
+    email: user.email || "user@example.com",
+    avatar: user.avatar || null,
+    role: user.role || "tester",
+    id: user.id || null,
+    teamId: user.teamId || null,
+  };
 
   // Dummy user (replace with your context later)
 
@@ -112,7 +112,7 @@ export function AppSidebarDeveloper() {
           </div>
           <span className="font-semibold text-lg truncate">BugSage</span>
         </div>
-       
+
       </SidebarHeader>
 
       <SidebarContent className="overflow-y-auto overflow-x-hidden">
@@ -157,7 +157,7 @@ export function AppSidebarDeveloper() {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -186,7 +186,7 @@ export function AppSidebarDeveloper() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              
+
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

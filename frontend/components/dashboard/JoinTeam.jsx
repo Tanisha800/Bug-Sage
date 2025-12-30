@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/app/providers/UserProvider";
 
 export default function JoinTeam() {
-    const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState([]);
   const [selectedTeamId, setSelectedTeamId] = useState("");
   const [loading, setLoading] = useState(false);
   const { user, setUser, API_URL } = useUser();
@@ -27,10 +27,10 @@ export default function JoinTeam() {
     // Fetch all teams
     fetch(`${API_URL}/api/jointeams`)
       .then((res) => res.json())
-      .then((data) => {setTeams(data)})
+      .then((data) => { setTeams(data) })
       .catch((err) => console.error("Error fetching teams:", err));
   }, [API_URL]);
-    console.log(teams)
+  console.log(teams)
   const handleJoinTeam = async () => {
     if (!selectedTeamId) return alert("Please select a team first");
 
@@ -56,12 +56,24 @@ export default function JoinTeam() {
         return;
       }
 
+      // ✅ Update localStorage with new token and user data
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        console.log("✅ New token saved to localStorage");
+      }
+
       // Update user context with new team info
       if (data.user) {
         setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
       }
 
-      alert("Joined team successfully!");
+      alert("Joined team successfully! Refreshing page...");
+
+      // ✅ Reload page to ensure all components use the new token
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (err) {
       console.error("Error joining team:", err);
     } finally {
@@ -81,17 +93,17 @@ export default function JoinTeam() {
           </DialogDescription>
         </DialogHeader>
         <JoinTeamSelect
-        teams={teams}
-        value={selectedTeamId}
-        onChange={setSelectedTeamId} // yahan se value parent mein aa rahi hai
-      />
-      <Button
-        className="mt-4"
-        onClick={handleJoinTeam}
-        disabled={loading || !selectedTeamId}
-      >
-        {loading ? "Joining..." : "Join Team"}
-      </Button>
+          teams={teams}
+          value={selectedTeamId}
+          onChange={setSelectedTeamId} // yahan se value parent mein aa rahi hai
+        />
+        <Button
+          className="mt-4"
+          onClick={handleJoinTeam}
+          disabled={loading || !selectedTeamId}
+        >
+          {loading ? "Joining..." : "Join Team"}
+        </Button>
       </DialogContent>
     </Dialog>
   );

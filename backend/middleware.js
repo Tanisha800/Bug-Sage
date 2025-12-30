@@ -13,8 +13,9 @@ export default function authenticateMiddleware(req, res, next) {
 
         const token = authHeader.split(" ")[1];
 
-        // Token verify karo
-        const decoded = jwt.verify(token, "supersecretkey123");
+        // Token verify karo - Use env variable with fallback
+        const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey123";
+        const decoded = jwt.verify(token, JWT_SECRET);
 
         // Yaha pe req.user set karo
         req.user = {
@@ -23,9 +24,6 @@ export default function authenticateMiddleware(req, res, next) {
             role: decoded.role,
             teamId: decoded.teamId,
         };
-
-        // Debug ke liye
-
 
         next();
     } catch (err) {
