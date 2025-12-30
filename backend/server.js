@@ -26,6 +26,8 @@ app.use(cors({
 app.use('/api/team', teamRoutes);
 app.use("/api/jointeams", jointeamRoutes);
 app.use("/api/kanban", kanbanRouter);
+app.use(authenticateMiddleware)
+app.use("/bugs", bugRouter);
 
 app.get("/", (req, res) => {
   res.send("Server is running with Prisma + MongoDB + JWT!");
@@ -36,7 +38,7 @@ app.use("/tasks", taskRouter)
 const prisma = new PrismaClient();
 
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey123";
+const JWT_SECRET = process.env.JWT_SECRET || SECRET_KEY;
 
 
 
@@ -134,11 +136,6 @@ app.get("/users", authenticateMiddleware, async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-app.use(authenticateMiddleware)
-
-app.use("/bugs", bugRouter);
-
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

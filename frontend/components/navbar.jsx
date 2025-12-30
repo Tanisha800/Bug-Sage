@@ -14,19 +14,19 @@ export function FloatingNavbar() {
     },
     {
       name: "Features",
-      link: "/about",
+      link: "#features",
       icon: <User className="h-4 w-4 text-white" />,
     },
     {
       name: "Pricing",
-      link: "/contact",
+      link: "#pricing",
       icon: <MessageSquare className="h-4 w-4 text-white" />,
     },
     {
-        name: "Reviews",
-        link: "/contact",
-        icon: <MessageSquare className="h-4 w-4text-white" />,
-      }
+      name: "Reviews",
+      link: "#reviews",
+      icon: <MessageSquare className="h-4 w-4text-white" />,
+    }
   ]
   return (
     <div className="relative w-full">

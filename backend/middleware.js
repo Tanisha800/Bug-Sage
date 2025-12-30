@@ -14,7 +14,7 @@ export default function authenticateMiddleware(req, res, next) {
         const token = authHeader.split(" ")[1];
 
         // Token verify karo - Use env variable with fallback
-        const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey123";
+        const JWT_SECRET = process.env.JWT_SECRET;
         const decoded = jwt.verify(token, JWT_SECRET);
 
         // Yaha pe req.user set karo

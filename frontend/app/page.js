@@ -9,7 +9,7 @@ import { AnimatedTestimonialsDemo } from "@/components/Testimonial";
 import { useTheme } from "next-themes";
 
 export default function Home() {
-  const { theme, setTheme,resolvedTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
 
   console.log("Theme:", theme, "Resolved:", resolvedTheme);
 
@@ -17,12 +17,20 @@ export default function Home() {
   console.log("Theme:", theme, "Resolved:", resolvedTheme);
   return (
     <div>
-      <FloatingNavbar/>
-      <HeroSection/>
-      <Features/>
-      <PricingBasic/>
-      <AnimatedTestimonialsDemo/>
-      <Footer/>
+      <FloatingNavbar />
+      <HeroSection />
+      <div id="features">
+        <Features />
+      </div>
+      <div id="pricing">
+        <PricingBasic />
+      </div>
+      <div id="reviews">
+        <AnimatedTestimonialsDemo />
+      </div>
+      <div className="bg-neutral-950">
+        <Footer />
+      </div>
 
       {/* <div className="w-20 h-20 bg-amber-300 dark:bg-amber-700"></div>
       <div

@@ -40,8 +40,8 @@ export function AnimatedTestimonialsDemo() {
   ];
 
   return (
-    <section className="py-16 bg-background text-center">
-      <h2 className="text-5xl font-bold mb-8 tracking-tight">
+    <section className="py-16 bg-neutral-950 text-center text-white">
+      <h2 className="text-5xl font-bold mb-8 tracking-tight text-white">
         What Our Customer Says
       </h2>
       <AnimatedTestimonials testimonials={testimonials} />
