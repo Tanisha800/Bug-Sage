@@ -17,7 +17,7 @@ router.get("/me", async (req, res) => {
 
     let decoded;
     try {
-      decoded = jwt.verify(token, "supersecretkey123");
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
       return res.status(401).json({ error: "Invalid or expired token" });
     }

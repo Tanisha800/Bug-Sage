@@ -30,7 +30,7 @@ router.post("/join", async (req, res) => {
     }
 
     const token = tokenHeader.split(" ")[1];
-    const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey123";
+    const JWT_SECRET = process.env.JWT_SECRET;
 
     let decoded;
     try {
