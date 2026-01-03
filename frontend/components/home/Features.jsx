@@ -1,5 +1,5 @@
 import { LayoutDashboard, Bug, Brain } from "lucide-react";
-import { Feature108 } from "./blocks/shadcnblocks-com-feature108";
+import { Feature108 } from "../blocks/shadcnblocks-com-feature108";
 
 const demoData = {
   badge: "BugSage AI",

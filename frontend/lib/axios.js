@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -14,11 +14,11 @@ instance.interceptors.request.use(
   (config) => {
     // Get token from localStorage
     const token = localStorage.getItem('token');
-    
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
+
     // Log request for debugging
     if (process.env.NODE_ENV === 'development') {
       console.log('🚀 Request:', config.method.toUpperCase(), config.url);
@@ -28,7 +28,7 @@ instance.interceptors.request.use(
         console.warn('⚠️ No token in request');
       }
     }
-    
+
     return config;
   },
   (error) => {
@@ -48,32 +48,32 @@ instance.interceptors.response.use(
   },
   (error) => {
     console.error('❌ Response error:', error);
-    
+
     if (error.response) {
       const { status, data } = error.response;
-      
+
       // Handle specific error cases
       if (status === 401) {
         console.error('🚫 Unauthorized - Token may be invalid or expired');
-        
+
         // Clear invalid token
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        
+
         // Redirect to login (adjust path as needed)
         if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
           window.location.href = '/login';
         }
       } else if (status === 403) {
-        console.error('🚫 Forbidden - Insufficient permissions');
+        console.error('Forbidden - Insufficient permissions');
         alert('You do not have permission to perform this action');
       } else if (status === 404) {
-        console.error('🔍 Not found:', error.config.url);
+        console.error(' Not found:', error.config.url);
       } else if (status === 500) {
-        console.error('💥 Server error:', data.error || data.message);
+        console.error(' Server error:', data.error || data.message);
         alert('Server error. Please try again later.');
       }
-      
+
       // Log error details
       console.error('Error details:', {
         url: error.config.url,
@@ -89,7 +89,7 @@ instance.interceptors.response.use(
       // Something else happened
       console.error('⚠️ Error:', error.message);
     }
-    
+
     return Promise.reject(error);
   }
 );

@@ -63,13 +63,11 @@ const demoPlans = [
 
 function PricingBasic() {
   return (
-    <div className="overflow-y-auto rounded-lg">
-      <Pricing
-        plans={demoPlans}
-        title="BugSage Pricing Plans"
-        description="Pick the plan that fits your team. All plans include AI-powered bug tracking, Kanban boards, and analytics to streamline your workflow."
-      />
-    </div>
+    <Pricing
+      plans={demoPlans}
+      title="BugSage Pricing Plans"
+      description="Pick the plan that fits your team. All plans include AI-powered bug tracking, Kanban boards, and analytics to streamline your workflow."
+    />
   );
 }
 

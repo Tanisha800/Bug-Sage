@@ -1,8 +1,8 @@
 "use client"
 import React from "react";
 
-import LetterGlitch from "./LetterGlitch";
-import SplitText from "./SplitText";
+import LetterGlitch from "../common/LetterGlitch";
+import SplitText from "../common/SplitText";
 import { SaveButton } from "@/components/ui/save-button"
 
 

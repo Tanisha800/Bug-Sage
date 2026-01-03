@@ -1,5 +1,5 @@
 "use client"
-import { SignInPage } from '@/components/ui/sign-in'
+import { SignInPage } from '@/components/auth/SignInPage'
 import React from 'react'
 
 function page() {

@@ -1,11 +1,11 @@
 "use client"
 import { Footer } from "@/components/blocks/footer-section";
-import { Features } from "@/components/Features";
-import HeroSection from "@/components/Hero Section";
-import { FloatingNavbar } from "@/components/navbar";
+import { Features } from "@/components/home/Features";
+import HeroSection from "@/components/home/HeroSection";
+import { FloatingNavbar } from "@/components/layout/Navbar";
 
-import { PricingBasic } from "@/components/Plan";
-import { AnimatedTestimonialsDemo } from "@/components/Testimonial";
+import { PricingBasic } from "@/components/home/Plan";
+import { AnimatedTestimonialsDemo } from "@/components/home/Testimonial";
 import { useTheme } from "next-themes";
 
 export default function Home() {

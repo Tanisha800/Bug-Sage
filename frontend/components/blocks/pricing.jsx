@@ -51,7 +51,7 @@ export function Pricing({
 
   return (
     <div className="py-20 bg-neutral-950 text-white">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="text-center space-y-4 mb-12">
           <h2 className="text-4xl font-bold tracking-tight sm:text-5xl text-white">
             {title}
@@ -74,7 +74,7 @@ export function Pricing({
             Annual billing <span className="text-primary">(Save 20%)</span>
           </span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 sm:2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
@@ -103,9 +103,11 @@ export function Pricing({
                 plan.isPopular ? "border-primary border-2" : "border-neutral-800",
                 "flex flex-col",
                 !plan.isPopular && "mt-5",
-                index === 0 || index === 2
+                index === 0
                   ? "z-0 transform translate-x-0 translate-y-0 -translate-z-[50px] rotate-y-[10deg]"
-                  : "z-10",
+                  : index === 2
+                    ? "z-0 transform translate-x-0 translate-y-0 -translate-z-[50px] rotate-y-[-10deg]"
+                    : "z-10",
                 index === 0 && "origin-right",
                 index === 2 && "origin-left"
               )}>

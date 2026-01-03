@@ -1,12 +1,12 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeProvider } from "@/components/common/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { SiteHeader } from "@/components/site-header";
-import { AppSidebarDeveloper } from "@/components/app-sidebar-developer";
+import { SiteHeader } from "@/components/layout/site-header";
+import { AppSidebarDeveloper } from "@/components/layout/AppSidebarDeveloper";
 import UserProvider from "../providers/UserProvider";
-import RoleProtection from "@/components/RoleProtection";
+import RoleProtection from "@/components/common/RoleProtection";
 
 
 

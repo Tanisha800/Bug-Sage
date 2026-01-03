@@ -1,7 +1,7 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeProvider } from "@/components/common/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
 
 
@@ -23,16 +23,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       ><ThemeProvider attribute="class" forcedTheme="dark">
-        <AuthProvider>
-        {children}
-        </AuthProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
-      
+
     </html>
   );
 }

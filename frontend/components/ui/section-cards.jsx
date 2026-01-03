@@ -12,20 +12,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export function SectionCards() {
-  const[stats,setStats]=useState({
+  const [stats, setStats] = useState({
     pendingBugs: 0,
     inProgress: 0,
     tested: 0,
     resolvedBugs: 0,
   })
-  const[loading,setLoading]=useState(true)
-  useEffect(()=>{
-    async function fetchStats(){
-      try{
-        const res=await axios.get("tasks/stats/summary")
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await axios.get("/api/bugs/stats/summary")
         setStats({
           pendingBugs: res.data.backlog,
           inProgress: res.data.inProgress,
@@ -33,16 +33,16 @@ export function SectionCards() {
           resolvedBugs: res.data.resolved
         });
       }
-      catch(error){
+      catch (error) {
         console.error("Error fetching dashboard stats:", error);
       }
-      finally{
+      finally {
         setLoading(false);
         console.log(stats)
       }
-    }fetchStats();
-  },[])
-    
+    } fetchStats();
+  }, [])
+
 
   return (
     <div
@@ -56,10 +56,10 @@ export function SectionCards() {
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-          Increasing this week
+            Increasing this week
           </div>
           <div className="text-muted-foreground">
-          New issues detected across multiple modules
+            New issues detected across multiple modules
           </div>
         </CardFooter>
       </Card>
@@ -72,10 +72,10 @@ export function SectionCards() {
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-          Developers actively working
+            Developers actively working
           </div>
           <div className="text-muted-foreground">
-          Fixes under review and validation
+            Fixes under review and validation
           </div>
         </CardFooter>
       </Card>
@@ -88,7 +88,7 @@ export function SectionCards() {
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-          Stable builds produced
+            Stable builds produced
           </div>
           <div className="text-muted-foreground">Most fixes cleared automated testing</div>
         </CardFooter>
@@ -102,7 +102,7 @@ export function SectionCards() {
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-          High resolution efficiency
+            High resolution efficiency
           </div>
           <div className="text-muted-foreground">Bugs closed after QA verification</div>
         </CardFooter>

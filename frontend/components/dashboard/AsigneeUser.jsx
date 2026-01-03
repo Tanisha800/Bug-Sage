@@ -37,7 +37,7 @@ export default function AsigneeUser({ value, onChange }) {
     const fetchAssignees = async () => {
 
       try {
-        const res = await axios.get("/bugs/assignees/list");
+        const res = await axios.get("/api/bugs/assignees/list");
         console.log(res.data)
         setUsers(res.data);
       } catch (err) {

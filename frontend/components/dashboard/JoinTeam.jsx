@@ -24,11 +24,29 @@ export default function JoinTeam() {
   const { user, setUser, API_URL } = useUser();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     // Fetch all teams
-    fetch(`${API_URL}/api/jointeams`)
-      .then((res) => res.json())
-      .then((data) => { setTeams(data) })
-      .catch((err) => console.error("Error fetching teams:", err));
+    fetch(`${API_URL}/api/team/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch teams");
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setTeams(data);
+        } else {
+          console.error("Teams data is not an array:", data);
+          setTeams([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching teams:", err);
+        setTeams([]);
+      });
   }, [API_URL]);
   console.log(teams)
   const handleJoinTeam = async () => {
@@ -39,7 +57,7 @@ export default function JoinTeam() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/api/jointeams/join`, {
+      const res = await fetch(`${API_URL}/api/team/join`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

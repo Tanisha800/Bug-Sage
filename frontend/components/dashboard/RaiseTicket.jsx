@@ -38,7 +38,7 @@ export default function RaiseTicket({ children, onSuccess }) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
-    
+
     console.log('🔍 Auth Check:', {
       hasToken: !!token,
       hasUser: !!user,
@@ -81,7 +81,7 @@ export default function RaiseTicket({ children, onSuccess }) {
 
       console.log('🚀 Submitting bug to /bugs endpoint...');
 
-      const response = await axios.post('/api/kanban', {
+      const response = await axios.post('/api/bugs', {
         title,
         description,
         assigneeId,
@@ -102,7 +102,7 @@ export default function RaiseTicket({ children, onSuccess }) {
       setDueDate(null);
       setAttachmentUrl(null);
       setPriority("MEDIUM");
-      
+
       // Close dialog
       setOpen(false);
 
@@ -120,10 +120,10 @@ export default function RaiseTicket({ children, onSuccess }) {
       });
 
       // Show user-friendly error message
-      const errorMessage = err.response?.data?.error || 
-                          err.response?.data?.message || 
-                          'Failed to raise bug. Please try again.';
-      
+      const errorMessage = err.response?.data?.error ||
+        err.response?.data?.message ||
+        'Failed to raise bug. Please try again.';
+
       alert(errorMessage);
 
       // If unauthorized, suggest login
