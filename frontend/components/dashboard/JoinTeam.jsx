@@ -86,7 +86,7 @@ export default function JoinTeam() {
         localStorage.setItem("user", JSON.stringify(data.user));
       }
 
-      alert("Joined team successfully! Refreshing page...");
+
 
       // ✅ Reload page to ensure all components use the new token
       setTimeout(() => {

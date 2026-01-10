@@ -149,8 +149,8 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {/* Projects */}
-              {/* <SidebarMenuItem>
+              {/* Bugs */}
+              <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === "/dashboard-tester/bugs"}
@@ -160,7 +160,7 @@ export function AppSidebar() {
                     <span>Bugs</span>
                   </Link>
                 </SidebarMenuButton>
-              </SidebarMenuItem> */}
+              </SidebarMenuItem>
 
               {/* Team */}
               <SidebarMenuItem>

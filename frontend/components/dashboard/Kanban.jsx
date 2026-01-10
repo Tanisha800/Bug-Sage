@@ -57,6 +57,8 @@ export default function BugKanban() {
         const res = await axios.get("/api/bugs");
         const data = res.data;
 
+        // const d1 = res.data?.data ?? [];
+
         const formatted = data.bugs.map((bug) => ({
           id: bug.id,
           name: bug.title,

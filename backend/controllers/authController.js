@@ -4,6 +4,34 @@ import prisma from "../config/prisma.js";
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export const signup = async (req, res) => {
+    const testerDummyBugs = [
+        {
+            title: "Login fails with valid credentials",
+            description: "User cannot login despite correct email and password",
+            priority: "HIGH",
+            status: "BACKLOG"
+        },
+        {
+            title: "Broken layout on Safari",
+            description: "Header overlaps content on Safari browser",
+            priority: "MEDIUM",
+            status: "TESTING"
+        }
+    ]
+    const developerDummyBugs = [
+        {
+            title: "Fix API timeout issue",
+            description: "Orders API times out under heavy load",
+            priority: "HIGH",
+            status: "IN_PROGRESS"
+        },
+        {
+            title: "Resolve notification crash",
+            description: "App crashes when sending push notifications",
+            priority: "MEDIUM",
+            status: "BACKLOG"
+        }
+    ]
     try {
         const { username, email, password, role } = req.body;
 
@@ -25,6 +53,8 @@ export const signup = async (req, res) => {
             data: { username, email, password: hashedPassword, role },
         });
 
+
+
         const token = jwt.sign(
             {
                 id: newUser.id,
@@ -36,8 +66,51 @@ export const signup = async (req, res) => {
             { expiresIn: "7d" }
         );
 
+        // 2️⃣ Find required users
+        const developer = await prisma.user.findFirst({
+            where: { role: "DEVELOPER" }
+        })
+        console.log('devloper', developer)
+
+        const tester = await prisma.user.findFirst({
+            where: { role: "TESTER" }
+        })
+        console.log('tester', tester)
+
+        const team = await prisma.team.findFirst()
+        console.log('team', team)
+
+        // 3️⃣ TESTER signup → create reported bugs
+        if (newUser.role === "TESTER" && developer) {
+            await prisma.bug.createMany({
+                data: testerDummyBugs.map(bug => ({
+                    ...bug,
+                    reporterId: newUser.id,
+                    assigneeId: developer.id,
+                    teamId: team?.id || null
+                }))
+            })
+        }
+        console.log('reported bugs', testerDummyBugs)
+
+        // 4️⃣ DEVELOPER signup → create assigned bugs
+        if (newUser.role === "DEVELOPER" && tester) {
+            await prisma.bug.createMany({
+                data: developerDummyBugs.map(bug => ({
+                    ...bug,
+                    reporterId: tester.id,
+                    assigneeId: newUser.id,
+                    teamId: team?.id || null
+                }))
+            })
+        }
+        console.log('assigned bugs', developerDummyBugs)
         res.status(201).json({ token, user: newUser });
-    } catch (err) {
+    }
+
+
+
+    catch (err) {
         console.error("Signup error:", err);
         res.status(500).json({ error: "Internal server error" });
     }

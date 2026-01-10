@@ -72,7 +72,7 @@ model Bug {
 
   // Reporter (TESTER)
   reporterId String @db.ObjectId
-  reporter   User   @relation("ReportedBugs", fields: [reporterId], references: [id])
+  reporter   User?   @relation("ReportedBugs", fields: [reporterId], references: [id])
 
   // Assignee (DEVELOPER)
   assigneeId String @db.ObjectId
