@@ -48,40 +48,43 @@ export default function BugKanban() {
   const [loading, setLoading] = useState(true);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedBug, setSelectedBug] = useState(null);
+  const [kanbanKey, setKanbanKey] = useState(0);
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   // ✅ Fetch bugs assigned to logged-in developer
+
+  const fetchBugs = async () => {
+    try {
+      const res = await axios.get("/api/bugs");
+      const data = res.data;
+
+      // const d1 = res.data?.data ?? [];
+
+      const formatted = data.bugs.map((bug) => ({
+        id: bug.id,
+        name: bug.title,
+        description: bug.description,
+        column: bug.status, // BACKLOG, PENDING, IN_PROGRESS, RESOLVED
+        priority: bug.priority,
+        startAt: bug.createdAt ? new Date(bug.createdAt) : new Date(),
+        endAt: bug.dueDate ? new Date(bug.dueDate) : null,
+        owner: bug.assignee ? { // Changed from bug.owner to bug.assignee based on backend response
+          name: bug.assignee.username,
+          image: null // bug.assignee.image is not available in backend response
+        } : null,
+        reporter: bug.reporter ? bug.reporter.username : 'Unknown', // Map reporter object to username
+        team: bug.team ? bug.team.name : null, // Map team object to name
+      }));
+
+      setBugs(formatted);
+    } catch (err) {
+      console.error("Error fetching bugs:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchBugs = async () => {
-      try {
-        const res = await axios.get("/api/bugs");
-        const data = res.data;
-
-        // const d1 = res.data?.data ?? [];
-
-        const formatted = data.bugs.map((bug) => ({
-          id: bug.id,
-          name: bug.title,
-          description: bug.description,
-          column: bug.status, // BACKLOG, PENDING, IN_PROGRESS, RESOLVED
-          priority: bug.priority,
-          startAt: bug.createdAt ? new Date(bug.createdAt) : new Date(),
-          endAt: bug.dueDate ? new Date(bug.dueDate) : null,
-          owner: bug.assignee ? { // Changed from bug.owner to bug.assignee based on backend response
-            name: bug.assignee.username,
-            image: null // bug.assignee.image is not available in backend response
-          } : null,
-          reporter: bug.reporter ? bug.reporter.username : 'Unknown', // Map reporter object to username
-          team: bug.team ? bug.team.name : null, // Map team object to name
-        }));
-
-        setBugs(formatted);
-      } catch (err) {
-        console.error("Error fetching bugs:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchBugs();
   }, []);
@@ -106,19 +109,23 @@ export default function BugKanban() {
   };
   // ✅ Handle drag/drop status change
   const handleDataChange = async (newData, meta) => {
-    setBugs(newData);
     const { movedItem, fromColumnId, toColumnId } = meta;
-
-    if (fromColumnId === toColumnId) {
-      return;
-    }
+    if (fromColumnId === toColumnId) return;
 
     try {
-      await axios.put(`/api/bugs/${movedItem.id}`, { status: toColumnId });
-    } catch (err) {
-      console.error("Error updating bug status:", err);
-      // Optionally: revert the change on error
-      // fetchBugs();
+      // 🔹 Call backend FIRST
+      await axios.put(`/api/bugs/${movedItem.id}`, {
+        status: toColumnId,
+      });
+
+      // 🔹 Only update UI if backend allows
+      setBugs(newData);
+    } catch (error) {
+      console.error("403 or error — syncing with backend");
+
+      // 🔥 SINGLE SOURCE OF TRUTH
+      await fetchBugs();
+      setKanbanKey((k) => k + 1);
     }
   };
 
@@ -135,6 +142,7 @@ export default function BugKanban() {
 
 
       <KanbanProvider
+        key={kanbanKey}
         columns={columns}
         data={bugs}
         onDataChange={handleDataChange}

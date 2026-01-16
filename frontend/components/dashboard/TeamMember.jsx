@@ -28,7 +28,7 @@ export default function TeamMember() {
 
   const fetchTeamMembers = async () => {
     try {
-      const response = await axios.get("api/team/members");
+      const response = await axios.get("/api/team/members");
       setMembers(response.data.members);
       setTeamName(response.data.team);
     } catch (error) {
@@ -89,7 +89,7 @@ export default function TeamMember() {
             You are not assigned to a team yet.
 
           </p>
-          <JoinTeam/>
+          <JoinTeam />
         </div>
       </div>
     );
@@ -157,7 +157,7 @@ export default function TeamMember() {
           </TableHeader>
           <TableBody>
             {members.map((member) => (
-              <TableRow 
+              <TableRow
                 key={member.id}
                 className="hover:bg-muted/50 transition-colors"
               >
@@ -181,8 +181,8 @@ export default function TeamMember() {
                   <div className="text-sm">{member.email}</div>
                 </TableCell>
                 <TableCell>
-                  <Badge 
-                    variant="outline" 
+                  <Badge
+                    variant="outline"
                     className={getRoleBadgeColor(member.role)}
                   >
                     {member.type}

@@ -27,20 +27,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider>
-          <UserProvider>
-            <AuthProvider>
-              <RoleProtection requiredRole="TESTER">
-                <SidebarProvider><AppSidebar variant="inset" /><SidebarInset><SiteHeader />{children}</SidebarInset></SidebarProvider>
-              </RoleProtection>
-            </AuthProvider>
-          </UserProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <section className="dashboard-layout">
+
+
+      <ThemeProvider>
+        <UserProvider>
+          <AuthProvider>
+            <RoleProtection requiredRole="TESTER">
+              <SidebarProvider><AppSidebar variant="inset" /><SidebarInset>{children}</SidebarInset></SidebarProvider>
+            </RoleProtection>
+          </AuthProvider>
+        </UserProvider>
+      </ThemeProvider>
+    </section>
   );
 }

@@ -1,5 +1,6 @@
 // lib/axios.js - Axios instance for frontend
 import axios from 'axios';
+import { useErrorStore } from "@/lib/errorStore"
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/',
@@ -36,7 +37,8 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
+instance.defaults.headers.common["Cache-Control"] = "no-cache";
+instance.defaults.headers.common["Pragma"] = "no-cache";
 // Response interceptor - Handle errors globally
 instance.interceptors.response.use(
   (response) => {
@@ -66,7 +68,7 @@ instance.interceptors.response.use(
         }
       } else if (status === 403) {
         console.error('Forbidden - Insufficient permissions');
-        alert('You do not have permission to perform this action');
+        useErrorStore.getState().openUnauthorized()
       } else if (status === 404) {
         console.error(' Not found:', error.config.url);
       } else if (status === 500) {
@@ -89,7 +91,7 @@ instance.interceptors.response.use(
       // Something else happened
       console.error('⚠️ Error:', error.message);
     }
-
+    console.log("rejected", error.response)
     return Promise.reject(error);
   }
 );

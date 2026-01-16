@@ -1,7 +1,9 @@
-import { useId } from "react";
+"use client";
+
+import { useEffect, useId, useState } from "react";
+import axios from "@/lib/axios";
 
 import { cn } from "@/lib/utils";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -12,48 +14,83 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const Square = ({
-  className,
-  children,
-}) => (
+const Square = ({ className, children }) => (
   <span
     aria-hidden="true"
     className={cn(
       "flex size-5 items-center justify-center rounded bg-muted font-medium text-muted-foreground text-xs",
-      className,
+      className
     )}
-    data-square
   >
     {children}
   </span>
 );
 
-export default function FilterUser() {
+export default function FilterUser({
+  selectedDeveloperId,
+  onDeveloperChange,
+}) {
   const id = useId();
+  const [developers, setDevelopers] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // 🔹 Fetch team members
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        setLoading(true);
+
+        const res = await axios.get("/api/team/members");
+        // 👆 route that maps to getTeamMembers
+
+        // 🔥 Filter ONLY developers
+        const devs = res.data.members.filter(
+          (member) => member.role === "DEVELOPER"
+        );
+
+        setDevelopers(devs);
+      } catch (err) {
+        console.error("Failed to fetch team members:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeamMembers();
+  }, []);
+
   return (
-    <div className="">
-      <Select defaultValue="1">
+    <div>
+      <Select
+        value={selectedDeveloperId}
+        onValueChange={onDeveloperChange}
+        disabled={loading}
+      >
         <SelectTrigger
-          className="ps-2 [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_[data-square]]:shrink-0"
+          className="ps-2 [&>span]:flex [&>span]:items-center [&>span]:gap-2"
           id={id}
         >
-          <SelectValue placeholder="Select framework" />
+          <SelectValue placeholder="Select developer" />
         </SelectTrigger>
-        <SelectContent className="[&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8">
+
+        <SelectContent>
           <SelectGroup>
-            <SelectLabel className="ps-2">Impersonate user</SelectLabel>
-            <SelectItem value="1">
-              <Square className="bg-indigo-400/20 text-indigo-500">F</Square>
-              <span className="truncate">Frank Morris</span>
+            <SelectLabel>Team Developers</SelectLabel>
+
+            {/* Optional: All developers */}
+            <SelectItem value="ALL">
+              <Square className="bg-gray-400/20 text-gray-600">ALL</Square>
+              <span className="truncate">All Developers</span>
             </SelectItem>
-            <SelectItem value="2">
-              <Square className="bg-purple-400/20 text-purple-500">X</Square>
-              <span className="truncate">Xavier Guerra</span>
-            </SelectItem>
-            <SelectItem value="3">
-              <Square className="bg-rose-400/20 text-rose-500">A</Square>
-              <span className="truncate">Anne Kelley</span>
-            </SelectItem>
+
+            {developers.map((dev) => (
+              <SelectItem key={dev.id} value={dev.id}>
+                <Square className="bg-indigo-400/20 text-indigo-500">
+                  {dev.name.charAt(0).toUpperCase()}
+                </Square>
+                <span className="truncate">{dev.name}</span>
+              </SelectItem>
+            ))}
           </SelectGroup>
         </SelectContent>
       </Select>

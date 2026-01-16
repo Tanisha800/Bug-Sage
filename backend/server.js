@@ -24,7 +24,12 @@ app.use(
   cors({
     origin: ["https://bug-sage-three.vercel.app", "http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Pragma",
+    ],
     credentials: true,
   })
 );

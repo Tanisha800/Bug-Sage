@@ -56,20 +56,23 @@ export const createBug = async (req, res) => {
 export const getBugs = async (req, res) => {
     try {
         const { id: userId, role, teamId } = req.user;
-        const { status } = req.query;
+        const { status, developerId } = req.query;
         console.log(role, teamId)
         let where = {};
         if (role === "TESTER") {
             where.teamId = teamId;
-            console.log("Tester")
+            if (developerId) {
+                where.assigneeId = developerId;
+            }
+
         } else if (role === "DEVELOPER") {
             where.assigneeId = userId;
         }
-
+        console.log("where", where)
         if (status) {
             where.status = status;
         }
-        console.log({ "where": where })
+
 
         const bugs = await prisma.bug.findMany({
             where,
@@ -80,7 +83,8 @@ export const getBugs = async (req, res) => {
             },
             orderBy: { createdAt: "desc" },
         });
-
+        console.log("developerId query:", req.query.developerId);
+        console.log("role:", req.user.role);
         res.json({ bugs });
     } catch (err) {
         console.error("Error fetching bugs:", err);
