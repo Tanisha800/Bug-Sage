@@ -82,7 +82,7 @@ export const SignInPage = ({
         const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
         const API_URL = BASE_URL.endsWith('/api') ? BASE_URL : `${BASE_URL}/api`;
 
-        console.log("Attempting login to:", `${API_URL}/auth/login`);
+        console.log(API_URL);
 
         try {
             const res = await fetch(`${API_URL}/auth/login`, {

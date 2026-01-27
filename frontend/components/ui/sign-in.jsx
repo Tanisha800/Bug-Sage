@@ -78,9 +78,10 @@ export const SignInPage = ({
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
+    console.log(process.env.NEXT_PUBLIC_API_URL);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
