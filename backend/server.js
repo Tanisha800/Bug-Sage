@@ -39,9 +39,7 @@ const corsOptions = {
   credentials: true,
 };
 
-// ✅ OPTIONS must come FIRST, before everything else
-app.options((".*"), cors(corsOptions));
-app.use(cors(corsOptions));
+app.use(cors(corsOptions));  // ✅ handles preflight automatically in Express v5
 app.use(express.json());
 
 app.get("/", (req, res) => res.send("Bug-Sage API is running..."));
