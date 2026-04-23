@@ -40,7 +40,7 @@ const corsOptions = {
 };
 
 // ✅ OPTIONS must come FIRST, before everything else
-app.options("*", cors(corsOptions));
+app.options((".*"), cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
 
