@@ -5,11 +5,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 const API_URL = BASE_URL.endsWith("/api") ? BASE_URL : `${BASE_URL}/api`;
 
 export const login = async (email, password) => {
-  const res = await axios.post(`${API_URL}/auth/login`, { email, password },
-    {
-      withCredentials: true,
-    }
-  );
+  const res = await axios.post(`${API_URL}/auth/login`, { email, password });
   const { token } = res.data;
 
   // store token in localStorage
@@ -18,11 +14,7 @@ export const login = async (email, password) => {
 };
 
 export const signup = async (username, email, password) => {
-  const res = await axios.post(`${API_URL}/auth/signup`, { username, email, password },
-    {
-      withCredentials: true,
-    }
-  );
+  const res = await axios.post(`${API_URL}/auth/signup`, { username, email, password });
   return res.data;
 };
 

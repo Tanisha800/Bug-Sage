@@ -20,17 +20,30 @@ const PORT = process.env.PORT || 8080;
 
 // Global Middleware
 
+const allowedOrigins = [
+  "https://bug-sage-three.vercel.app",
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://localhost:3002",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:3001",
+  "http://127.0.0.1:3002",
+];
+
 app.use(
   cors({
-    origin: [
-      "https://bug-sage-three.vercel.app",
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "http://localhost:3002",
-      "http://127.0.0.1:3000",
-      "http://127.0.0.1:3001",
-      "http://127.0.0.1:3002",
-    ],
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+      // Allow any Vercel preview/production deployment for this project
+      if (
+        allowedOrigins.includes(origin) ||
+        /^https:\/\/bug-sage[\w-]*\.vercel\.app$/.test(origin)
+      ) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
