@@ -1,11 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors";
 
+// Routes
 import bugRouter from "./routes/bug.js";
 import authRouter from "./routes/auth.js";
 import userRouter from "./routes/user.js";
 import teamRoutes from "./routes/team.js";
+
+// Middleware
 import authenticateMiddleware from "./middleware/auth.js";
 
 dotenv.config();
@@ -23,32 +25,54 @@ const allowedOrigins = [
   "http://127.0.0.1:3002",
 ];
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (
-      allowedOrigins.includes(origin) ||
-      /^https:\/\/bug-sage[a-zA-Z0-9._-]*\.vercel\.app$/.test(origin)
-    ) {
-      return callback(null, true);
-    }
-    return callback(new Error(`CORS: origin ${origin} not allowed`));
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "Cache-Control", "Pragma", "Accept", "X-Requested-With"],
-  credentials: true,
-};
+// Manual CORS — works with Express v5, no wildcard issues
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
 
-app.use(cors(corsOptions));  // ✅ handles preflight automatically in Express v5
+  const isAllowed =
+    !origin ||
+    allowedOrigins.includes(origin) ||
+    /^https:\/\/bug-sage[a-zA-Z0-9._-]*\.vercel\.app$/.test(origin);
+
+  if (origin && isAllowed) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,DELETE,PATCH,OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type,Authorization,Cache-Control,Pragma,Accept,X-Requested-With"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  // Handle preflight immediately — no 404
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  next();
+});
+
 app.use(express.json());
 
-app.get("/", (req, res) => res.send("Bug-Sage API is running..."));
+// Health Check
+app.get("/", (req, res) => {
+  res.send("Bug-Sage API is running...");
+});
 
+// Auth Routes (Public)
 app.use("/api/auth", authRouter);
 
+// Protected Routes
 app.use(authenticateMiddleware);
+
 app.use("/api/users", userRouter);
 app.use("/api/bugs", bugRouter);
 app.use("/api/team", teamRoutes);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
